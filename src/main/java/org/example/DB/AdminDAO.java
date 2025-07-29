@@ -56,7 +56,7 @@ public class AdminDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_VENDORS_SQL)) {
             preparedStatement.setString(1, vendor.getMail());
             preparedStatement.setString(2, vendor.getPassword());
-            preparedStatement.setString(3, vendor.getRole());
+//            preparedStatement.setString(3, vendor.getRole());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
