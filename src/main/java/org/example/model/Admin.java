@@ -5,12 +5,14 @@ public class Admin {
     private String name;
     private String password;
     String role = "admin";
+    private String employement_id ;
 
-    public Admin(String mail, String name, String password, String role){
+    public Admin(String mail, String name, String password, String role,String employement_id){
         this.mail = mail;
         this.name = name;
         this.password = password;
         this.role = role;
+        this.employement_id=employement_id;
     }
 
     public Admin(String mail, String name, String password){

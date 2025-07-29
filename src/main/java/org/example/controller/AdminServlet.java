@@ -33,7 +33,7 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         String mail = request.getParameter("mail");
         String password = mail;
-        Vendor newVendor = new Vendor(mail, password, "vendor");
+        Vendor newVendor = new Vendor(mail, password);
         try {
             adminDAO.requestNewVendor(newVendor);
             System.out.println("Vendor requested: " + mail);
