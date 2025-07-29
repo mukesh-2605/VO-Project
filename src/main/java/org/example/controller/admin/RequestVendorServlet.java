@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.admin;
 
 /* *
  *
@@ -6,12 +6,10 @@ package org.example.controller;
  */
 
 import org.example.DB.AdminDAO;
-import org.example.model.Admin;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import jakarta.servlet.RequestDispatcher;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,14 +17,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.Vendor;
 
-@WebServlet("/requestVendor")
-public class AdminServlet extends HttpServlet {
+@WebServlet("/admin/requestVendor")
+public class RequestVendorServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private AdminDAO adminDAO =new AdminDAO();
-
-    public void init() {
-        adminDAO = new AdminDAO();
-    }
 
     // add new vendor
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -37,9 +31,16 @@ public class AdminServlet extends HttpServlet {
         try {
             adminDAO.requestNewVendor(newVendor);
             System.out.println("Vendor requested: " + mail);
+            response.sendRedirect("");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("request-vendor.jsp").forward(request, response);
     }
 
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response)

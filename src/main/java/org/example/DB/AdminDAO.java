@@ -18,8 +18,8 @@ public class AdminDAO {
     private final String jdbcUsername = new DBConfig().getJdbcUsername();
     private final String jdbcPassword = new DBConfig().getJdbcPassword();
 
-    private static final String ADD_VENDORS_SQL = "INSERT INTO password_manager (mail, password, role) VALUES (?, ?, ?)";
-//    private static final String SELECT_USER_BY_ID = "SELECT id, name, email, country FROM users WHERE id = ?";
+    private static final String ADD_VENDORS_SQL = "INSERT INTO passwordManager (email, password, role) VALUES (?, ?, ?)";
+    private static final String INSERT_VENDORS_SQL = "INSERT INTO vendorDetails (v_email) VALUES (?)";
 //    private static final String SELECT_ALL_USERS = "SELECT * FROM users";
 //    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?";
 //    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?";
@@ -52,15 +52,44 @@ public class AdminDAO {
     // ADD_VENDORS_SQL
     // add servlet in admin and get vendor mail and put here
     public void requestNewVendor(Vendor vendor) throws SQLException {
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(ADD_VENDORS_SQL)) {
-            preparedStatement.setString(1, vendor.getMail());
-            preparedStatement.setString(2, vendor.getPassword());
-//            preparedStatement.setString(3, vendor.getRole());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            printSQLException(e);
+//        try (Connection connection = getConnection();
+//             connection.setAutoCommit(false);
+//             PreparedStatement preparedStatement1 = connection.prepareStatement(ADD_VENDORS_SQL);
+//             PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_VENDORS_SQL)) {
+//            preparedStatement1.setString(1, vendor.getMail());
+//            preparedStatement1.setString(2, vendor.getPassword());
+//            preparedStatement1.setString(3, "vendor");
+//            preparedStatement1.executeUpdate();
+//
+//            preparedStatement2.setString(1, vendor.getMail());
+//            preparedStatement2.executeUpdate();
+//
+//            connection.commit();
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);  // <-- Required to enable manual transaction control
+
+            try (PreparedStatement preparedStatement1 = connection.prepareStatement(ADD_VENDORS_SQL);
+                 PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_VENDORS_SQL)) {
+
+                preparedStatement1.setString(1, vendor.getMail());
+                preparedStatement1.setString(2, vendor.getPassword());
+                preparedStatement1.setString(3, "vendor");
+                preparedStatement1.executeUpdate();
+
+                preparedStatement2.setString(1, vendor.getMail());
+                preparedStatement2.executeUpdate();
+
+                connection.commit();  // Commit only if both succeed
+            } catch (SQLException e) {
+                connection.rollback(); // Optional: rollback if something fails
+                printSQLException(e);
+            }
         }
+
     }
 
 //    public User selectUser(int id) {
