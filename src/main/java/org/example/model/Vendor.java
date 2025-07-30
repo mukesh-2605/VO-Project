@@ -6,14 +6,6 @@ public class Vendor {
     private String password;
     private String company_name;
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     private String category;
     private int phone_num;
     private String website;
@@ -52,7 +44,19 @@ public class Vendor {
         this.password = password;
 
     }
+    public Vendor(String name,String mail, String company_name){
+        this.name = name;
+        this.mail = mail;
+        this.company_name = company_name;
+    }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     /**
      * @return the name
      */
