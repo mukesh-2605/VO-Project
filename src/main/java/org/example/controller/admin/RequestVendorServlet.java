@@ -20,7 +20,6 @@ import org.example.model.Vendor;
 
 @WebServlet("/admin/requestVendor")
 public class RequestVendorServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
     private AdminDAO adminDAO =new AdminDAO();
 
     // add new vendor
@@ -32,7 +31,7 @@ public class RequestVendorServlet extends HttpServlet {
         try {
             adminDAO.requestNewVendor(newVendor);
             System.out.println("Vendor requested: " + mail);
-            response.sendRedirect("admin-display.jsp");
+            response.sendRedirect("/admin/display");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +40,7 @@ public class RequestVendorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("request-vendor.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/request-vendor.jsp").forward(request, response);
     }
 
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response)

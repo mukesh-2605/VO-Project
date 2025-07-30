@@ -24,6 +24,14 @@
     <%
         }
     %>
+    </table>
+
+    <h2>Users</h2>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
 
     <%
             List<User> users = (List<User>) request.getAttribute("users");
@@ -31,7 +39,7 @@
         %>
         <tr>
             <td><%= u.getName() %></td>
-            <td><%= u.getMail() %></td>
+            <td><%= u.getEmail() %></td>
         </tr>
         <%
             }

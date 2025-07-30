@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.DB.AdminDAO;
+//import org.example.model.User;
 import org.example.model.User;
 import org.example.model.Vendor;
 
@@ -18,27 +19,17 @@ import java.util.Map;
 public class DisplayServlet extends HttpServlet {
     private AdminDAO adminDAO = new AdminDAO();
 
-    // add new vendor
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//
-//        try {
-//            switch (action) {
-//                case "/new":
-//                    showNewForm(request, response);
-//                    break;
-//    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Map<String, List<?>> data = adminDAO.getAllVendorsAndUsers();
-            List<Vendor> vendorList = (List<Vendor>) data.get("vendors"); // Fetch from DB
-            List<User> userList = (List<User>) data.get("users");
+            List<Vendor> vendorList = adminDAO.getAllVendors(); // Fetch from DB
+            List<User> userList = adminDAO.getAllUsers();
+            System.out.println("vendor" + vendorList.toString());
+            vendorList.forEach(v -> System.out.println("Vendor Name: " + v.getName()));
             request.setAttribute("vendors", vendorList); // Send to JSP
             request.setAttribute("users", userList);
-            request.getRequestDispatcher("/admin-display.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/user-vendor-display.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("DB error", e);
         }
