@@ -12,6 +12,10 @@ public class User {
 
     // Getters and Setters
     // Parameterized constructor
+    public User(String email,String name){
+        this.email = email;
+        this.name = name;
+    }
     public User(String email, String name, String phoneNumber, String role, String employmentId) {
         this.email = email;
         this.name = name;

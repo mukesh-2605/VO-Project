@@ -59,4 +59,12 @@ public class Admin {
     public String getRole() {
         return role;
     }
+
+    public String getEmployment_id() {
+        return employment_id;
+    }
+
+    public void setEmployment_id(String employment_id) {
+        this.employment_id = employment_id;
+    }
 }

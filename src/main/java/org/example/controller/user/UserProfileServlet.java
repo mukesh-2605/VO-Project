@@ -13,7 +13,7 @@ import java.io.IOException;
  * It securely retrieves the logged-in user's information from the session
  * and forwards it to the JSP for display.
  */
-@WebServlet("/userProfile")
+@WebServlet("/user/userProfile")
 public class UserProfileServlet extends HttpServlet {
 
     private UserDAO userDAO;
@@ -34,6 +34,7 @@ public class UserProfileServlet extends HttpServlet {
         // --- SECURITY CHECK ---
         // If there's no session or no user email in the session, the user is not logged in.
         // Redirect them to the login page.
+
         if (session == null || session.getAttribute("userEmail") == null) {
             response.sendRedirect("/login.jsp"); // Or your context path + "/login.jsp"
             return; // Stop further execution.
@@ -50,6 +51,6 @@ public class UserProfileServlet extends HttpServlet {
 
         // Forward the request to the JSP page for rendering.
         // The name is updated to match our previous JSP file.
-        request.getRequestDispatcher("/user_profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/User/user_profile.jsp").forward(request, response);
     }
 }

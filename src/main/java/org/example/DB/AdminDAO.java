@@ -22,21 +22,10 @@ public class AdminDAO {
     private final String jdbcPassword = new DBConfig().getJdbcPassword();
 
     private static final String ADD_VENDORS_SQL = "INSERT INTO passwordManager (email, password, role) VALUES (?, ?, ?)";
-    private static final String INSERT_VENDORS_SQL = "INSERT INTO vendorDetails (v_email) VALUES (?)";
+    private static final String INSERT_VENDORS_SQL = "INSERT INTO vendorDetails (v_email, status) VALUES (?, ?)";
     private static final String SELECT_ALL_VENDORS = "SELECT v_email, v_name FROM vendorDetails";
     private static final String SELECT_ALL_USERS = "SELECT pd.email, pd.name FROM profileDetails pd JOIN passwordManager pm ON pd.email = pm.email WHERE pm.role = 'user'";
-//    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?";
-
-//    protected Connection getConnection() {
-//        Connection connection = null;
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-//        } catch (SQLException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return connection;
-//    }
+    //private static final String SELECT_VENDOR_BY_STATUS = "SELECT "
 
     protected Connection getConnection() throws SQLException {
         try {
@@ -55,23 +44,6 @@ public class AdminDAO {
     // ADD_VENDORS_SQL
     // add servlet in admin and get vendor mail and put here
     public void requestNewVendor(Vendor vendor) throws SQLException {
-//        try (Connection connection = getConnection();
-//             connection.setAutoCommit(false);
-//             PreparedStatement preparedStatement1 = connection.prepareStatement(ADD_VENDORS_SQL);
-//             PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_VENDORS_SQL)) {
-//            preparedStatement1.setString(1, vendor.getMail());
-//            preparedStatement1.setString(2, vendor.getPassword());
-//            preparedStatement1.setString(3, "vendor");
-//            preparedStatement1.executeUpdate();
-//
-//            preparedStatement2.setString(1, vendor.getMail());
-//            preparedStatement2.executeUpdate();
-//
-//            connection.commit();
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
 
@@ -84,6 +56,7 @@ public class AdminDAO {
                 preparedStatement1.executeUpdate();
 
                 preparedStatement2.setString(1, vendor.getMail());
+                preparedStatement2.setString(2, "requested");
                 preparedStatement2.executeUpdate();
 
                 connection.commit();  // Commit only if both succeed
@@ -95,32 +68,8 @@ public class AdminDAO {
 
     }
 
-    public Map<String, List<?>> getAllVendorsAndUsers() throws SQLException {
+    public List<Vendor> getAllVendors() throws SQLException {
         List<Vendor> vendors = new ArrayList<>();
-        List<User> users = new ArrayList<>();
-//        try (Connection connection = getConnection();
-//             PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
-//             ResultSet rs1 = stmt1.executeQuery();
-//             PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS);
-//             ResultSet rs2 = stmt2.executeQuery()) {
-//
-//            while (rs1.next()) {
-//                String email = rs1.getString("v_email");
-//                String name = rs1.getString("name");
-//
-//                vendors.add(new Vendor(email, name)); //change this
-//            }
-//            System.out.println("hello" + vendors.toString());
-//
-//            while (rs2.next()) {
-//                String email = rs2.getString("email");
-//                String name = rs2.getString("name");
-//
-//                users.add(new User(email, name)); //change this
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
 
         try (Connection connection = getConnection()) {
 
@@ -130,16 +79,21 @@ public class AdminDAO {
 
                 while (rs1.next()) {
                     String email = rs1.getString("v_email");
-                    String name = rs1.getString(2);
+                    String name = rs1.getString("v_name");
                     vendors.add(new Vendor(email, name));
                 }
-                ResultSetMetaData meta = rs1.getMetaData();
-                for (int i = 1; i <= meta.getColumnCount(); i++) {
-                    System.out.println("Column " + i + ": " + meta.getColumnLabel(i));
-                }
-
-                System.out.println("VENDORS: " + vendors.toString());
             }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return vendors;
+    }
+
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+
+        try (Connection connection = getConnection()) {
 
             // Fetch users
             try (PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS);
@@ -157,11 +111,33 @@ public class AdminDAO {
         } catch (SQLException e) {
             printSQLException(e);
         }
-        Map<String, List<?>> map = new HashMap<>();
-        map.put("vendors", vendors);
-        map.put("users", users);
-        return map;
+        return users;
     }
+
+//    public List<Vendor> getVendorByStatus() throws SQLException {
+//        List<Vendor> vendors = new ArrayList<>();
+//
+//        try (Connection connection = getConnection()) {
+//
+//            // Fetch vendors
+//            try (PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
+//                 ResultSet rs1 = stmt1.executeQuery()) {
+//
+//                while (rs1.next()) {
+//                    String email = rs1.getString("v_email");
+//                    String name = rs1.getString("v_name");
+//                    vendors.add(new Vendor(email, name));
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+//        return vendors;
+//    }
+
+
+
 //    public User selectUser(int id) {
 //        User user = null;
 //        try (Connection connection = getConnection();

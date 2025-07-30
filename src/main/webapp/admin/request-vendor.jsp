@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +7,7 @@
 </head>
 <body>
 <h2>Request Vendor Access</h2>
-<form action="admin/requestVendor" method="post">
+<form action="${pageContext.request.contextPath}/admin/requestVendor" method="post">
     <label for="mail">Vendor Email:</label>
     <input type="email" id="mail" name="mail" required>
     <br><br>
