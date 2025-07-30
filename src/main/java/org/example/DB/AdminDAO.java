@@ -7,11 +7,14 @@ package org.example.DB;
 
 
 import org.example.DBConfig;
+import org.example.model.User;
 import org.example.model.Vendor;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminDAO {
     private final String jdbcURL = new DBConfig().getJdbcURL();
@@ -20,8 +23,8 @@ public class AdminDAO {
 
     private static final String ADD_VENDORS_SQL = "INSERT INTO passwordManager (email, password, role) VALUES (?, ?, ?)";
     private static final String INSERT_VENDORS_SQL = "INSERT INTO vendorDetails (v_email) VALUES (?)";
-//    private static final String SELECT_ALL_USERS = "SELECT * FROM users";
-//    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?";
+    private static final String SELECT_ALL_VENDORS = "SELECT v_email, v_name FROM vendorDetails";
+    private static final String SELECT_ALL_USERS = "SELECT pd.email, pd.name FROM profileDetails pd JOIN passwordManager pm ON pd.email = pm.email WHERE pm.role = 'user'";
 //    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?";
 
 //    protected Connection getConnection() {
@@ -70,7 +73,7 @@ public class AdminDAO {
 //        }
 
         try (Connection connection = getConnection()) {
-            connection.setAutoCommit(false);  // <-- Required to enable manual transaction control
+            connection.setAutoCommit(false);
 
             try (PreparedStatement preparedStatement1 = connection.prepareStatement(ADD_VENDORS_SQL);
                  PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_VENDORS_SQL)) {
@@ -92,6 +95,73 @@ public class AdminDAO {
 
     }
 
+    public Map<String, List<?>> getAllVendorsAndUsers() throws SQLException {
+        List<Vendor> vendors = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+//        try (Connection connection = getConnection();
+//             PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
+//             ResultSet rs1 = stmt1.executeQuery();
+//             PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS);
+//             ResultSet rs2 = stmt2.executeQuery()) {
+//
+//            while (rs1.next()) {
+//                String email = rs1.getString("v_email");
+//                String name = rs1.getString("name");
+//
+//                vendors.add(new Vendor(email, name)); //change this
+//            }
+//            System.out.println("hello" + vendors.toString());
+//
+//            while (rs2.next()) {
+//                String email = rs2.getString("email");
+//                String name = rs2.getString("name");
+//
+//                users.add(new User(email, name)); //change this
+//            }
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+
+        try (Connection connection = getConnection()) {
+
+            // Fetch vendors
+            try (PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
+                 ResultSet rs1 = stmt1.executeQuery()) {
+
+                while (rs1.next()) {
+                    String email = rs1.getString("v_email");
+                    String name = rs1.getString(2);
+                    vendors.add(new Vendor(email, name));
+                }
+                ResultSetMetaData meta = rs1.getMetaData();
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.println("Column " + i + ": " + meta.getColumnLabel(i));
+                }
+
+                System.out.println("VENDORS: " + vendors.toString());
+            }
+
+            // Fetch users
+            try (PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS);
+                 ResultSet rs2 = stmt2.executeQuery()) {
+
+                while (rs2.next()) {
+                    String email = rs2.getString("email");
+                    String name = rs2.getString("name");
+                    users.add(new User(email, name));
+                }
+
+                System.out.println("USERS: " + users);
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        Map<String, List<?>> map = new HashMap<>();
+        map.put("vendors", vendors);
+        map.put("users", users);
+        return map;
+    }
 //    public User selectUser(int id) {
 //        User user = null;
 //        try (Connection connection = getConnection();

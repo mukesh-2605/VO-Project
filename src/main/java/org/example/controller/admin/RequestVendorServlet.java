@@ -31,7 +31,7 @@ public class RequestVendorServlet extends HttpServlet {
         try {
             adminDAO.requestNewVendor(newVendor);
             System.out.println("Vendor requested: " + mail);
-            response.sendRedirect("");
+            response.sendRedirect("admin-display.jsp");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
