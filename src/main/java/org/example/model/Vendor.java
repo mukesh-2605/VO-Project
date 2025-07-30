@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class Vendor {
-    private final String mail;
+    private String mail;
     private String name;
     private String password;
     private String company_name;
@@ -53,6 +53,15 @@ public class Vendor {
 
     }
 
+    public Vendor(String name,String company_name, String category, int phone_num, String website, String payment_terms) {
+        this.name = name;
+        this.company_name = company_name;
+        this.category = category;
+        this.phone_num = phone_num;
+        this.website = website;
+        this.payment_terms = payment_terms;
+    }
+    public Vendor(){}
     /**
      * @return the name
      */
