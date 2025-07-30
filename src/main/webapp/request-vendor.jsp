@@ -5,7 +5,7 @@
 </head>
 <body>
 <h2>Request Vendor Access</h2>
-<form action="requestVendor" method="post">
+<form action="admin/requestVendor" method="post">
     <label for="mail">Vendor Email:</label>
     <input type="email" id="mail" name="mail" required>
     <br><br>
