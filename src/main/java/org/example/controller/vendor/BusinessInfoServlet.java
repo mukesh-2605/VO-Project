@@ -24,7 +24,7 @@ public class BusinessInfoServlet extends HttpServlet {
         //String email=Constants.email;
         Vendor vendor=null;
         try(Connection connection= vendorDAO.newConnection();
-            PreparedStatement query=connection.prepareStatement("select * from vendorDetails where v_email=?")){
+            PreparedStatement query=connection.prepareStatement("select * from vendor_details where v_email=?")){
 
             query.setString(1,Constants.email);
             ResultSet rs=query.executeQuery();
@@ -33,7 +33,7 @@ public class BusinessInfoServlet extends HttpServlet {
                 String name=rs.getString("v_name");
                 String c_name=rs.getString("company_name");
                 String category=rs.getString("category");
-                int p_num=rs.getInt("phone_num");
+                String p_num=rs.getString("phone_num");
                 String website=rs.getString("website");
                 String payment_terms=rs.getString("payment_terms");
                 vendor=new Vendor(name,c_name,category,p_num,website,payment_terms);
@@ -58,7 +58,7 @@ public class BusinessInfoServlet extends HttpServlet {
         String phone_num=request.getParameter("phone_num");
         String website=request.getParameter("website");
         String payment_terms=request.getParameter("payment_terms");
-        String UDPATE_BUSINESS_INFO_SQL="UPDATE vendorDetails SET v_name=?, company_name=?,category=? ,"+
+        String UDPATE_BUSINESS_INFO_SQL="UPDATE vendor_details SET v_name=?, company_name=?,category=? ,"+
                 " phone_num=?,website=?, payment_terms=? WHERE v_email=?";
 
         try(Connection connection= vendorDAO.newConnection();

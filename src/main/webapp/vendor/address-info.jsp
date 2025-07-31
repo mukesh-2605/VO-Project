@@ -32,38 +32,38 @@
         <div id="container">
             <h5> Billing Address </h5>
             <label for="b_country">Country :  </label>
-            <input type="text" id="b_country" name="b_country" value="<%= vendor != null ? vendor.getB_country() : "" %>" required>
+            <input type="text" id="b_country" name="b_country" value="<%= vendor != null && vendor.getB_country()!=null ? vendor.getB_country() : "" %>" required>
             <br><br>
             <label for="b_address">Address : </label>
-            <input type="text" id="b_address" name="b_address" value="<%= vendor != null ? vendor.getB_address() : "" %>" required>
+            <input type="text" id="b_address" name="b_address" value="<%= vendor != null && vendor.getB_address()!=null ? vendor.getB_address() : "" %>" required>
             <br><br>
             <label for="b_city">City :</label>
-            <input type="text" id="b_city" name="b_city" value="<%= vendor != null ? vendor.getB_city() : "" %>" required>
+            <input type="text" id="b_city" name="b_city" value="<%= vendor != null && vendor.getB_city()!=null ? vendor.getB_city() : "" %>" required>
             <br><br>
             <label for="b_state">State :</label>
-            <input type="text" id="b_state" name="b_state" value="<%= vendor != null ? vendor.getB_state() : "" %>" required>
+            <input type="text" id="b_state" name="b_state" value="<%= vendor != null && vendor.getB_state()!=null ? vendor.getB_state() : "" %>" required>
             <br><br>
             <label for="b_zipcode">Zipcode :</label>
-            <input type="text" id="b_zipcode" name="b_zipcode" value="<%= vendor != null ? vendor.getB_zipcode() : "" %>" required>
+            <input type="text" id="b_zipcode" name="b_zipcode" value="<%= vendor != null && vendor.getB_zipcode()!=null ? vendor.getB_zipcode() : "" %>" required>
             <br><br>
 
 
             <div id="shippingAddress" style="display:none;">
                 <h5> Shipping Address </h5>
                 <label for="s_country">Country :  </label>
-                <input type="text" id="s_country" name="s_country" value="<%= vendor != null ? vendor.getS_country() : "" %>">
+                <input type="text" id="s_country" name="s_country" value="<%= vendor != null && vendor.getS_country()!=null ? vendor.getS_country() : "" %>">
                 <br><br>
                 <label for="s_address">Address : </label>
-                <input type="text" id="s_address" name="s_address" value="<%= vendor != null ? vendor.getS_address() : "" %>">
+                <input type="text" id="s_address" name="s_address" value="<%= vendor != null && vendor.getS_address()!=null ? vendor.getS_address() : "" %>">
                 <br><br>
                 <label for="s_city">City :</label>
-                <input type="text" id="s_city" name="s_city" value="<%= vendor != null ? vendor.getS_city() : "" %>">
+                <input type="text" id="s_city" name="s_city" value="<%= vendor != null && vendor.getS_city()!=null ? vendor.getS_city() : "" %>">
                 <br><br>
                 <label for="s_state">State :</label>
-                <input type="text" id="s_state" name="s_state" value="<%= vendor != null ? vendor.getS_state() : "" %>">
+                <input type="text" id="s_state" name="s_state" value="<%= vendor != null && vendor.getS_state()!=null ? vendor.getS_state() : "" %>">
                 <br><br>
                 <label for="s_zipcode">Zipcode :</label>
-                <input type="text" id="s_zipcode" name="s_zipcode" value="<%= vendor != null ? vendor.getS_zipcode() : "" %>">
+                <input type="text" id="s_zipcode" name="s_zipcode" value="<%= vendor != null && vendor.getS_zipcode()!=null ? vendor.getS_zipcode() : "" %>">
                 <br><br>
             </div>
 

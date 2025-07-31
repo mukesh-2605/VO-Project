@@ -1,27 +1,14 @@
 package org.example.model;
 
 public class Vendor {
+    private int id;
     private String mail;
     private String name;
     private String password;
+    private int userid;
     private String company_name;
-
-    public Vendor(String vendorName, String mail, String companyName) {
-        this.name = vendorName;
-        this.mail = mail;
-        this.company_name = companyName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     private String category;
-    private int phone_num;
+    private String phone_num;
     private String website;
     private String payment_terms;
     private String b_country;
@@ -37,8 +24,8 @@ public class Vendor {
     private String GSTIN_or_VAT_or_TIN_type;
     private String GSTIN_or_VAT_or_TIN_number;
     private String PAN_number;
-    private String business_lisence_number;
-    private String benificiary_name;
+    private String business_licence_number;
+    private String beneficiary_name;
     private String bank_name;
     private String acc_num;
     private String acc_type;
@@ -50,16 +37,25 @@ public class Vendor {
     private String cp_email;
     private String cp_communication_channel;
     private String status;
-    private String userid;
     private String remarks;
 
-    public Vendor(String mail, String password){
+
+    public Vendor(int id,String vendorName, String mail, String companyName) {
+        this.id=id;
+        this.name = vendorName;
+        this.mail = mail;
+        this.company_name = companyName;
+    }
+
+
+    public Vendor(int id,String mail, String password){
+        this.id=id;
         this.mail = mail;
         this.password = password;
 
     }
 
-    public Vendor(String name,String company_name, String category, int phone_num, String website, String payment_terms) {
+    public Vendor(String name,String company_name, String category, String phone_num, String website, String payment_terms) {
         this.name = name;
         this.company_name = company_name;
         this.category = category;
@@ -71,6 +67,11 @@ public class Vendor {
     /**
      * @return the name
      */
+
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -106,6 +107,14 @@ public class Vendor {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 
     public String getRemarks() {
         return remarks;
@@ -115,11 +124,11 @@ public class Vendor {
         this.remarks = remarks;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
@@ -211,20 +220,20 @@ public class Vendor {
         this.bank_name = bank_name;
     }
 
-    public String getBenificiary_name() {
-        return benificiary_name;
+    public String getBeneficiary_name() {
+        return beneficiary_name;
     }
 
-    public void setBenificiary_name(String benificiary_name) {
-        this.benificiary_name = benificiary_name;
+    public void setBeneficiary_name(String beneficiary_name) {
+        this.beneficiary_name = beneficiary_name;
     }
 
-    public String getBusiness_lisence_number() {
-        return business_lisence_number;
+    public String getBusiness_licence_number() {
+        return business_licence_number;
     }
 
-    public void setBusiness_lisence_number(String business_lisence_number) {
-        this.business_lisence_number = business_lisence_number;
+    public void setBusiness_licence_number(String business_licence_number) {
+        this.business_licence_number = business_licence_number;
     }
 
     public String getPAN_number() {
@@ -347,11 +356,11 @@ public class Vendor {
         this.website = website;
     }
 
-    public int getPhone_num() {
+    public String getPhone_num() {
         return phone_num;
     }
 
-    public void setPhone_num(int phone_num) {
+    public void setPhone_num(String phone_num) {
         this.phone_num = phone_num;
     }
 

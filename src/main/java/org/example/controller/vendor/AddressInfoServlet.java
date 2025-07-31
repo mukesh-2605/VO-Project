@@ -18,13 +18,13 @@ import java.sql.SQLException;
 @WebServlet("/vendor/address-info")
 public class AddressInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private String email= Constants.email;
+    private final String email= Constants.email;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Vendor vendor =new Vendor();
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendorDetails where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
 
             query.setString(1,email);
             ResultSet rs= query.executeQuery();
@@ -65,7 +65,7 @@ public class AddressInfoServlet extends HttpServlet {
         String s_state=request.getParameter("s_state");
         String s_zipcode=request.getParameter("s_zipcode");
 
-        String UDPATE_ADDRESS_INFO_SQL="UPDATE vendorDetails SET b_country=?, b_address=?, b_city=?, b_state=?, b_zipcode=?, "
+        String UDPATE_ADDRESS_INFO_SQL="UPDATE vendor_details SET b_country=?, b_address=?, b_city=?, b_state=?, b_zipcode=?, "
                 + "s_country=?, s_address=?, s_city=?, s_state=?, s_zipcode=? WHERE v_email=?";
 
         try(Connection conn= vendorDAO.newConnection();
@@ -84,7 +84,7 @@ public class AddressInfoServlet extends HttpServlet {
             query.setString(11,email);
 
             query.executeUpdate();
-            response.sendRedirect("tax-info.jsp");
+            response.sendRedirect(request.getContextPath()+"/vendor/tax-info");
 
 
         } catch (SQLException e) {
