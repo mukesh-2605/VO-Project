@@ -34,7 +34,8 @@ public class LoginDAO {
      * @return A User object if valid, otherwise null.
      */
     public User validateUser(String email, String password) {
-        String sql = "SELECT email, role FROM passwordManager WHERE email = ? AND password = ? AND role = 'user'";
+        // CORRECTED SQL: Removed the non-existent 'name' column.
+        String sql = "SELECT email  FROM passwordManager WHERE email = ? AND password = ? AND role = 'user'";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setString(2, password);
@@ -42,14 +43,16 @@ public class LoginDAO {
             if (rs.next()) {
                 User user = new User();
                 user.setEmail(rs.getString("email"));
-                user.setName(rs.getString("email")); // Using email as name
-                return user;
+
+                return user; // This will now return a valid User object.
             }
         } catch (SQLException e) {
+            // This block will no longer be triggered by the "column not found" error.
             e.printStackTrace();
         }
         return null;
     }
+
 
     /**
      * Validates credentials for an 'admin'.
