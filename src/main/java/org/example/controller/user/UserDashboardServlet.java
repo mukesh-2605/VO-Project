@@ -1,7 +1,7 @@
 package org.example.controller.user;
 
 import org.example.DB.VendorDAO;
-import org.example.model.Vendor; // Make sure you have a Vendor model class
+import org.example.model.Vendor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,11 +9,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Prepares all necessary data for the user dashboard.
- * It ensures the user is authenticated, fetches the list of approved vendors,
- * and then forwards the request to the JSP for display.
- */
 @WebServlet("/dashboard")
 public class UserDashboardServlet extends HttpServlet {
 
@@ -21,7 +16,7 @@ public class UserDashboardServlet extends HttpServlet {
 
     @Override
     public void init() {
-        vendorDAO = new VendorDAO(); // Initialize your Vendor Data Access Object
+        vendorDAO = new VendorDAO();
     }
 
     @Override
@@ -30,28 +25,22 @@ public class UserDashboardServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // Security check: If no session, redirect to login
-        if (session == null || session.getAttribute("userEmail") == null) {
+        if (session == null || !"user".equals(session.getAttribute("userRole")) || session.getAttribute("loggedInUser") == null) {
             response.sendRedirect("index.jsp");
-            return;
+            return; // Stop execution
         }
 
         // --- Fetch Data for all three statuses ---
-
-        // 1. Get Approved Vendors
-        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("Approved");
+        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("approved");
         request.setAttribute("approvedVendorList", approvedVendors);
 
-        // 2. Get Pending Vendors
-        List<Vendor> pendingVendors = vendorDAO.getVendorsByStatus("Pending");
+        List<Vendor> pendingVendors = vendorDAO.getVendorsByStatus("pending");
         request.setAttribute("pendingVendorList", pendingVendors);
 
-        // 3. Get Rejected Vendors
-        List<Vendor> rejectedVendors = vendorDAO.getVendorsByStatus("Rejected");
+        List<Vendor> rejectedVendors = vendorDAO.getVendorsByStatus("rejected");
         request.setAttribute("rejectedVendorList", rejectedVendors);
 
-        // Forward the request (with all the data) to the JSP page
-        request.getRequestDispatcher("/user_dashboard.jsp").forward(request, response);
-
+        // Forward the request to the JSP page
+        request.getRequestDispatcher("/User/user_dashboard.jsp").forward(request, response);
     }
 }

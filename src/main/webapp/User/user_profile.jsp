@@ -13,6 +13,7 @@
         <c:when test="${not empty requestScope.user}">
             <h2>User Profile</h2>
 
+            <p><strong>Email:</strong> <c:out value="${user.email}"/></p>
             <p><strong>Name:</strong> <c:out value="${user.name}"/></p>
             <p><strong>Email:</strong> <c:out value="${user.email}"/></p>
             <p><strong>Phone Number:</strong> <c:out value="${user.phoneNumber}"/></p>
@@ -26,8 +27,11 @@
         </c:otherwise>
     </c:choose>
 
+
+
+
     <hr>
-    <a href="/User/user_dashboard.jsp">Back to Dashboard</a>
+    <a href="dashboard">Back to Dashboard</a>
 
 </body>
 </html>
