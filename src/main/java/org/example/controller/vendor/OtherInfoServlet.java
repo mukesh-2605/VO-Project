@@ -8,15 +8,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
-@WebServlet("/vendor/bank-info")
-public class BankInfoServlet extends HttpServlet {
+@WebServlet("/vendor/other-info")
+public class OtherInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
     private final String email= Constants.email;
 
@@ -30,14 +32,10 @@ public class BankInfoServlet extends HttpServlet {
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
-                vendor.setBeneficiary_name(rs.getString("beneficiary_name"));
-                vendor.setBank_name(rs.getString("bank_name"));
-                vendor.setAcc_num(rs.getString("acc_num"));
-                vendor.setAcc_type(rs.getString("acc_type"));
-                vendor.setRouting_number(rs.getString("routing_number"));
+                vendor.setOther_details(rs.getString("other_details"));
 
                 request.setAttribute("vendor",vendor);
-                request.getRequestDispatcher("/vendor/bank-info.jsp").forward(request,response);
+                request.getRequestDispatcher("/vendor/other-info.jsp").forward(request,response);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -46,26 +44,23 @@ public class BankInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String beneficiary_name=request.getParameter("beneficiary_name");
-        String bank_name=request.getParameter("bank_name");
-        String acc_num=request.getParameter("acc_num");
-        String acc_type=request.getParameter("acc_type");
-        String routing_number=request.getParameter("routing_number");
+        JSONObject updatedExtraInfo = new JSONObject();
+        Enumeration<String> paramNames = request.getParameterNames();
 
-        String UDPATE_BANK_INFO_SQL="UPDATE vendor_details SET beneficiary_name=?, bank_name=?, acc_num=?, acc_type=?, routing_number=? WHERE v_email=?";
+        while (paramNames.hasMoreElements()) {
+            String param = paramNames.nextElement();
+            String value = request.getParameter(param);
+            updatedExtraInfo.put(param, value);
+        }
 
+        String querySQL="UPDATE vendor_details SET other_details=? WHERE v_email=?";
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement(UDPATE_BANK_INFO_SQL)){
-            query.setString(1,beneficiary_name);
-            query.setString(2,bank_name);
-            query.setString(3,acc_num);
-            query.setString(4,acc_type);
-            query.setString(5,routing_number);
-
-            query.setString(6,email);
-
-            query.executeUpdate();
+            PreparedStatement query= conn.prepareStatement(querySQL))   {
+            query.setString(1,updatedExtraInfo.toString());
+            query.setString(2,email);
+            ResultSet rs= query.executeQuery();
             response.sendRedirect(request.getContextPath()+"/vendor/contact-info");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

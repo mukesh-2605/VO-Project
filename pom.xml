@@ -136,6 +136,12 @@
       as it conflicts with the Jakarta libraries.
     -->
 
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20240303</version> <!-- latest version as of now -->
+    </dependency>
+
   </dependencies>
 
   <build>
