@@ -48,11 +48,15 @@ public class Vendor {
     }
 
 
-    public Vendor(int id,String mail, String password){
+    public Vendor(int id, String mail, String password){
         this.id=id;
         this.mail = mail;
         this.password = password;
+    }
 
+    public Vendor(String mail, String password){
+        this.mail = mail;
+        this.password = password;
     }
 
     public Vendor(String name,String company_name, String category, String phone_num, String website, String payment_terms) {

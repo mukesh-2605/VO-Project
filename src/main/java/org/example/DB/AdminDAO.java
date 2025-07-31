@@ -21,10 +21,12 @@ public class AdminDAO {
     private final String jdbcUsername = new DBConfig().getJdbcUsername();
     private final String jdbcPassword = new DBConfig().getJdbcPassword();
 
-    private static final String ADD_VENDORS_SQL = "INSERT INTO passwordManager (email, password, role) VALUES (?, ?, ?)";
-    private static final String INSERT_VENDORS_SQL = "INSERT INTO vendorDetails (v_email, status) VALUES (?, ?)";
-    private static final String SELECT_ALL_VENDORS = "SELECT v_email, v_name FROM vendorDetails";
-    private static final String SELECT_ALL_USERS = "SELECT pd.email, pd.name FROM profileDetails pd JOIN passwordManager pm ON pd.email = pm.email WHERE pm.role = 'user'";
+    private static final String ADD_VENDORS_SQL = "INSERT INTO vendor_password_manager (v_email, password) VALUES (?, ?)";
+    private static final String INSERT_VENDORS_SQL = "INSERT INTO vendor_details (v_email, status) VALUES (?, ?)";
+    private static final String SELECT_ALL_VENDORS_SQL = "SELECT id, v_email, v_name, company_name FROM vendor_details";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT pd.emp_id, pd.email, pd.name FROM user_profile_details pd JOIN emp_password_manager pm ON pd.emp_id = pm.emp_id";
+    private static final String DELETE_VENDOR_SQL1 = "DELETE FROM vendor_details WHERE id = ?";
+    private static final String DELETE_VENDOR_SQL2 = "DELETE FROM vendor_password_manager WHERE id = ?";
     //private static final String SELECT_VENDOR_BY_STATUS = "SELECT "
 
     protected Connection getConnection() throws SQLException {
@@ -43,19 +45,18 @@ public class AdminDAO {
 
     // ADD_VENDORS_SQL
     // add servlet in admin and get vendor mail and put here
-    public void requestNewVendor(Vendor vendor) throws SQLException {
+    public void requestNewVendor(String mail) throws SQLException {
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement preparedStatement1 = connection.prepareStatement(ADD_VENDORS_SQL);
                  PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_VENDORS_SQL)) {
 
-                preparedStatement1.setString(1, vendor.getMail());
-                preparedStatement1.setString(2, vendor.getPassword());
-                preparedStatement1.setString(3, "vendor");
+                preparedStatement1.setString(1, mail);
+                preparedStatement1.setString(2, mail);
                 preparedStatement1.executeUpdate();
 
-                preparedStatement2.setString(1, vendor.getMail());
+                preparedStatement2.setString(1, mail);
                 preparedStatement2.setString(2, "requested");
                 preparedStatement2.executeUpdate();
 
@@ -74,13 +75,15 @@ public class AdminDAO {
         try (Connection connection = getConnection()) {
 
             // Fetch vendors
-            try (PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
+            try (PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS_SQL);
                  ResultSet rs1 = stmt1.executeQuery()) {
 
                 while (rs1.next()) {
+                    int id = rs1.getInt("id");
                     String email = rs1.getString("v_email");
                     String name = rs1.getString("v_name");
-                    vendors.add(new Vendor(email, name));
+                    String company_name = rs1.getString("company_name");
+                    vendors.add(new Vendor(id, name, email, company_name));
                 }
             }
 
@@ -96,7 +99,7 @@ public class AdminDAO {
         try (Connection connection = getConnection()) {
 
             // Fetch users
-            try (PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS);
+            try (PreparedStatement stmt2 = connection.prepareStatement(SELECT_ALL_USERS_SQL);
                  ResultSet rs2 = stmt2.executeQuery()) {
 
                 while (rs2.next()) {
@@ -114,92 +117,29 @@ public class AdminDAO {
         return users;
     }
 
-//    public List<Vendor> getVendorByStatus() throws SQLException {
-//        List<Vendor> vendors = new ArrayList<>();
-//
-//        try (Connection connection = getConnection()) {
-//
-//            // Fetch vendors
-//            try (PreparedStatement stmt1 = connection.prepareStatement(SELECT_ALL_VENDORS);
-//                 ResultSet rs1 = stmt1.executeQuery()) {
-//
-//                while (rs1.next()) {
-//                    String email = rs1.getString("v_email");
-//                    String name = rs1.getString("v_name");
-//                    vendors.add(new Vendor(email, name));
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return vendors;
-//    }
+    public boolean deleteVendor(int id) throws SQLException {
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
 
+            try (PreparedStatement preparedStatement1 = connection.prepareStatement(DELETE_VENDOR_SQL1);
+                 PreparedStatement preparedStatement2 = connection.prepareStatement(DELETE_VENDOR_SQL2)) {
 
+                preparedStatement1.setInt(1, id);
+                preparedStatement1.executeUpdate();
 
-//    public User selectUser(int id) {
-//        User user = null;
-//        try (Connection connection = getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
-//            preparedStatement.setInt(1, id);
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            while (rs.next()) {
-//                String name = rs.getString("name");
-//                String email = rs.getString("email");
-//                String country = rs.getString("country");
-//                user = new User(id, name, email, country);
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return user;
-//    }
-//
-//    public List<User> selectAllUsers() {
-//        List<User> users = new ArrayList<>();
-//        try (Connection connection = getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            while (rs.next()) {
-//                int id = rs.getInt("id");
-//                String name = rs.getString("name");
-//                String email = rs.getString("email");
-//                String country = rs.getString("country");
-//                users.add(new User(id, name, email, country));
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return users;
-//    }
-//
-//    public boolean deleteUser(int id) throws SQLException {
-//        boolean rowDeleted;
-//        try (Connection connection = getConnection();
-//             PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL)) {
-//            statement.setInt(1, id);
-//            rowDeleted = statement.executeUpdate() > 0;
-//        }
-//        return rowDeleted;
-//    }
-//
-//    public boolean updateUser(User user) throws SQLException {
-//        boolean rowUpdated;
-//        try (Connection connection = getConnection();
-//             PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL)) {
-//            statement.setString(1, user.getName());
-//            statement.setString(2, user.getEmail());
-//            statement.setString(3, user.getCountry());
-//            statement.setInt(4, user.getId());
-//
-//            rowUpdated = statement.executeUpdate() > 0;
-//        }
-//        return rowUpdated;
-//    }
-//
+                preparedStatement2.setInt(1, id);
+                preparedStatement2.executeUpdate();
+
+                connection.commit();  // Commit only if both succeed
+                return true;
+            } catch (SQLException e) {
+                connection.rollback(); // Optional: rollback if something fails
+                printSQLException(e);
+                throw new RuntimeException("Failed to delete vendor with ID: " + id, e);
+            }
+        }
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {

@@ -41,7 +41,7 @@ public class VendorDAO {
         // Create a list to hold the vendors
         List<Vendor> vendors = new ArrayList<>();
         // The SQL query with a placeholder (?) for the status parameter
-        String sql = "SELECT v_name,v_email,company_name FROM vendor_details WHERE status = ?";
+        String sql = "SELECT id, v_name,v_email,company_name FROM vendor_details WHERE status = ?";
 
         // Use try-with-resources to automatically close the connection, statement, and result set
         try (Connection connection = getConnection();
@@ -57,12 +57,13 @@ public class VendorDAO {
             while (rs.next()) {
                 // Retrieve data from the current row
 
-                String vendorName  = rs.getString("name");
+                int id = rs.getInt("id");
+                String vendorName  = rs.getString("v_name");
                 String companyName = rs.getString("company_name");
                 String vEmail = rs.getString("v_email");
 
                 // Creating a new Vendor object and add it to the list and add to vendor list
-                Vendor vendor = new Vendor(vendorName,vEmail,companyName);
+                Vendor vendor = new Vendor(id, vendorName,vEmail,companyName);
                 vendors.add(vendor);
             }
         } catch (SQLException e) {

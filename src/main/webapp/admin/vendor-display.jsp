@@ -15,13 +15,19 @@
         <th>Company</th>
     </tr>
     <%
-        List<Vendor> vendors = (List<Vendor>) request.getAttribute("pendingVendors");
-        for (Vendor v : vendors) {
+        List<Vendor> pendingVendors = (List<Vendor>) request.getAttribute("pendingVendors");
+        for (Vendor v : pendingVendors) {
     %>
     <tr>
-        <td><%= v.getName() %></td>
+        <td><%= v.getName() != null ? v.getName() : "-" %></td>
         <td><%= v.getMail() %></td>
-        <td><%= v.getCompany() %></td>
+        <td><%= v.getCompany_name() != null ? v.getCompany_name() : "-" %></td>
+        <td>
+            <form action="<%= request.getContextPath() %>/processVendor" method="post">
+                <input type="hidden" name="id" value="<%= v.getId() %>" />
+                <button type="submit">Process</button>
+            </form>
+        </td>
     </tr>
     <%
         }
@@ -37,12 +43,19 @@
         </tr>
 
     <%
-            List<Vendor> vendors = (List<Vendor>) request.getAttribute("requestedVendors");
-            for (Vendor v : vendors) {
+            List<Vendor> requestedVendors = (List<Vendor>) request.getAttribute("requestedVendors");
+            for (Vendor v : requestedVendors) {
         %>
         <tr>
-            <td><%= v.getName() %></td>
-            <td><%= v.getEmail() %></td>
+            <td><%= v.getName() != null ? v.getName() : "-" %></td>
+            <td><%= v.getMail() %></td>
+            <td><%= v.getCompany_name() != null ? v.getCompany_name() : "-" %></td>
+            <td>
+                <form action="<%= request.getContextPath() %>/admin/deleteVendor" method="post">
+                    <input type="hidden" name="id" value="<%= v.getId() %>" />
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         <%
             }
@@ -57,13 +70,19 @@
             <th>Company</th>
         </tr>
         <%
-            List<Vendor> vendors = (List<Vendor>) request.getAttribute("approvedVendors");
-            for (Vendor v : vendors) {
+            List<Vendor> approvedVendors = (List<Vendor>) request.getAttribute("approvedVendors");
+            for (Vendor v : approvedVendors) {
         %>
         <tr>
-            <td><%= v.getName() %></td>
+            <td><%= v.getName() != null ? v.getName() : "-" %></td>
             <td><%= v.getMail() %></td>
-            <td><%= v.getCompany() %></td>
+            <td><%= v.getCompany_name() != null ? v.getCompany_name() : "-" %></td>
+            <td>
+                <form action="<%= request.getContextPath() %>/processVendor" method="post">
+                    <input type="hidden" name="id" value="<%= v.getId() %>" />
+                    <button type="submit">Process</button>
+                </form>
+            </td>
         </tr>
         <%
             }
@@ -78,13 +97,19 @@
             <th>Company</th>
         </tr>
         <%
-            List<Vendor> vendors = (List<Vendor>) request.getAttribute("reviewVendors");
-            for (Vendor v : vendors) {
+            List<Vendor> reviewVendors = (List<Vendor>) request.getAttribute("reviewVendors");
+            for (Vendor v : reviewVendors) {
         %>
         <tr>
-            <td><%= v.getName() %></td>
+            <td><%= v.getName() != null ? v.getName() : "-" %></td>
             <td><%= v.getMail() %></td>
-            <td><%= v.getCompany() %></td>
+            <td><%= v.getCompany_name() != null ? v.getCompany_name() : "-" %></td>
+            <td>
+                <form action="<%= request.getContextPath() %>/processVendor" method="post">
+                    <input type="hidden" name="id" value="<%= v.getId() %>" />
+                    <button type="submit">Process</button>
+                </form>
+            </td>
         </tr>
         <%
             }

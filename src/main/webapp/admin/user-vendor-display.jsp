@@ -12,14 +12,16 @@
     <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Company</th>
     </tr>
     <%
         List<Vendor> vendors = (List<Vendor>) request.getAttribute("vendors");
         for (Vendor v : vendors) {
     %>
     <tr>
-        <td><%= v.getName() %></td>
+        <td><%= v.getName() != null ? v.getName() : "-" %></td>
         <td><%= v.getMail() %></td>
+        <td><%= v.getCompany_name() != null ? v.getCompany_name() : "-" %></td>
     </tr>
     <%
         }

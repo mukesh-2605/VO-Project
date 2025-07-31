@@ -24,14 +24,14 @@ public class RequestVendorServlet extends HttpServlet {
 
     // add new vendor
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String mail = request.getParameter("mail");
         String password = mail;
         Vendor newVendor = new Vendor(mail, password);
         try {
-            adminDAO.requestNewVendor(newVendor);
+            adminDAO.requestNewVendor(mail);
             System.out.println("Vendor requested: " + mail);
-            response.sendRedirect("/admin/display");
+            response.sendRedirect(request.getContextPath() + "/admin");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

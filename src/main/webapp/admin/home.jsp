@@ -10,7 +10,7 @@
             <button type="submit">Invite Vendor</button>
         </form>
 
-        <form action="<%= request.getContextPath() %>/admin/display" method="get">
+        <form action="<%= request.getContextPath() %>/admin/vendors" method="get">
             <button type="submit">View Vendors</button>
         </form>
 
