@@ -22,7 +22,7 @@ public class DeleteVendorServlet extends HttpServlet {
         try {
             adminDAO.deleteVendor(id);
             System.out.println("Vendor requested: " + id);
-            response.sendRedirect(request.getContextPath() + "/admin");
+            response.sendRedirect(request.getContextPath() + "/admin/vendors");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

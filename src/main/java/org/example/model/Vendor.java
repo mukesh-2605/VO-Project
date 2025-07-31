@@ -47,6 +47,47 @@ public class Vendor {
         this.company_name = companyName;
     }
 
+    //Constructor for vendor_details table (everything except password)
+    public Vendor(int id, String mail, String name, int userid, String company_name, String category, String phone_num, String website, String payment_terms, String b_country, String b_address, String b_city, String b_state, String b_zipcode, String s_country, String s_address, String s_city, String s_state, String s_zipcode, String GSTIN_or_VAT_or_TIN_type, String GSTIN_or_VAT_or_TIN_number, String PAN_number, String business_licence_number, String beneficiary_name, String bank_name, String acc_num, String acc_type, String routing_number, String contact_person_name, String cp_role, String cp_phoneNum, String cp_alter_phoneNum, String cp_email, String cp_communication_channel, String status, String remarks) {
+        this.id = id;
+        this.mail = mail;
+        this.name = name;
+        this.userid = userid;
+        this.company_name = company_name;
+        this.category = category;
+        this.phone_num = phone_num;
+        this.website = website;
+        this.payment_terms = payment_terms;
+        this.b_country = b_country;
+        this.b_address = b_address;
+        this.b_city = b_city;
+        this.b_state = b_state;
+        this.b_zipcode = b_zipcode;
+        this.s_country = s_country;
+        this.s_address = s_address;
+        this.s_city = s_city;
+        this.s_state = s_state;
+        this.s_zipcode = s_zipcode;
+        this.GSTIN_or_VAT_or_TIN_type = GSTIN_or_VAT_or_TIN_type;
+        this.GSTIN_or_VAT_or_TIN_number = GSTIN_or_VAT_or_TIN_number;
+        this.PAN_number = PAN_number;
+        this.business_licence_number = business_licence_number;
+        this.beneficiary_name = beneficiary_name;
+        this.bank_name = bank_name;
+        this.acc_num = acc_num;
+        this.acc_type = acc_type;
+        this.routing_number = routing_number;
+        this.contact_person_name = contact_person_name;
+        this.cp_role = cp_role;
+        this.cp_phoneNum = cp_phoneNum;
+        this.cp_alter_phoneNum = cp_alter_phoneNum;
+        this.cp_email = cp_email;
+        this.cp_communication_channel = cp_communication_channel;
+        this.status = status;
+        this.remarks = remarks;
+
+    }
+
 
     public Vendor(int id, String mail, String password){
         this.id=id;
