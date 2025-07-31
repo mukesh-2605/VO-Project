@@ -10,9 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-/**
- * Handles user authentication by routing to role-specific validation.
- */
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -43,6 +41,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("loggedInUser", user); // Store the entire user object
                     session.setAttribute("userRole", "user");   // Store the role for easy checks
                     session.setAttribute("userEmail",email);
+                    session.setAttribute("userPhoneNum",user.getPhoneNumber());
                     response.sendRedirect("dashboard");
                     loginSuccess = true;
                 }

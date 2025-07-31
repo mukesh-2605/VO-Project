@@ -12,10 +12,6 @@
     <div>
         <h2>Login to Your Account</h2>
 
-        <%--
-          This block will display an error message if the login servlet
-          sets an attribute named "errorMessage" in the request.
-        --%>
 
         <c:if test="${not empty requestScope.errorMessage}">
             <p style="color:red;">

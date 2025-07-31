@@ -33,25 +33,47 @@ public class LoginDAO {
      * Validates credentials for a 'user'.
      * @return A User object if valid, otherwise null.
      */
+
+
+
+
+
     public User validateUser(String email, String password) {
-        // CORRECTED SQL: Removed the non-existent 'name' column.
-        String sql = "SELECT email  FROM passwordManager WHERE email = ? AND password = ? AND role = 'user'";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        User user = null;
+
+        String sql = "SELECT upd.emp_id, upd.email, upd.name, upd.phone_num, upd.role " +
+                "FROM emp_password_manager epm " +
+                "JOIN user_profile_details upd ON epm.emp_id = upd.emp_id " +
+                "WHERE epm.email = ? AND epm.password = ? AND epm.role = 'user'";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, email);
             ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                User user = new User();
-                user.setEmail(rs.getString("email"));
 
-                return user; // This will now return a valid User object.
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+
+                user.setEmploymentId(String.valueOf(rs.getInt("emp_id")));
+                user.setEmail(rs.getString("email"));
+                user.setName(rs.getString("name"));
+                user.setPhoneNumber(rs.getString("phone_num"));
+
             }
         } catch (SQLException e) {
-            // This block will no longer be triggered by the "column not found" error.
             e.printStackTrace();
         }
-        return null;
+
+        // Return the complete User object, or null if login failed.
+        return user;
     }
+
+
+
+
 
 
     /**
