@@ -31,7 +31,7 @@ public class UserProfileServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("userEmail") == null) {
-            response.sendRedirect("/index.jsp");
+            response.sendRedirect("/login.jsp");
             return;
         }
 

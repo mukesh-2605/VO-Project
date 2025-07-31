@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
@@ -18,15 +19,15 @@ import java.sql.SQLException;
 @WebServlet("/vendor/address-info")
 public class AddressInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private final String email= Constants.email;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Vendor vendor =new Vendor();
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setString(1,email);
+            query.setInt(1,vendor.getId());
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -53,6 +54,8 @@ public class AddressInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         String b_country=request.getParameter("b_country");
         String b_address=request.getParameter("b_address");
         String b_city=request.getParameter("b_city");
@@ -66,7 +69,7 @@ public class AddressInfoServlet extends HttpServlet {
         String s_zipcode=request.getParameter("s_zipcode");
 
         String UDPATE_ADDRESS_INFO_SQL="UPDATE vendor_details SET b_country=?, b_address=?, b_city=?, b_state=?, b_zipcode=?, "
-                + "s_country=?, s_address=?, s_city=?, s_state=?, s_zipcode=? WHERE v_email=?";
+                + "s_country=?, s_address=?, s_city=?, s_state=?, s_zipcode=? WHERE id=?";
 
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(UDPATE_ADDRESS_INFO_SQL)){
@@ -81,7 +84,7 @@ public class AddressInfoServlet extends HttpServlet {
             query.setString(8,s_city);
             query.setString(9,s_state);
             query.setString(10,s_zipcode);
-            query.setString(11,email);
+            query.setInt(11,vendor.getId());
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/tax-info");

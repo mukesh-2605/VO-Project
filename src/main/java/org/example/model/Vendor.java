@@ -40,6 +40,14 @@ public class Vendor {
     private String remarks;
     private String other_details;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public String getOther_details() {
         return other_details;
     }

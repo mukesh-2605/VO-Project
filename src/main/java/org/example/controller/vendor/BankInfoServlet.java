@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
@@ -18,15 +19,15 @@ import java.sql.SQLException;
 @WebServlet("/vendor/bank-info")
 public class BankInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private final String email= Constants.email;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Vendor vendor =new Vendor();
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setString(1,email);
+            query.setInt(1,vendor.getId());
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -46,13 +47,15 @@ public class BankInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         String beneficiary_name=request.getParameter("beneficiary_name");
         String bank_name=request.getParameter("bank_name");
         String acc_num=request.getParameter("acc_num");
         String acc_type=request.getParameter("acc_type");
         String routing_number=request.getParameter("routing_number");
 
-        String UDPATE_BANK_INFO_SQL="UPDATE vendor_details SET beneficiary_name=?, bank_name=?, acc_num=?, acc_type=?, routing_number=? WHERE v_email=?";
+        String UDPATE_BANK_INFO_SQL="UPDATE vendor_details SET beneficiary_name=?, bank_name=?, acc_num=?, acc_type=?, routing_number=? WHERE id=?";
 
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(UDPATE_BANK_INFO_SQL)){
@@ -62,7 +65,7 @@ public class BankInfoServlet extends HttpServlet {
             query.setString(4,acc_type);
             query.setString(5,routing_number);
 
-            query.setString(6,email);
+            query.setInt(6,vendor.getId());
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/contact-info");

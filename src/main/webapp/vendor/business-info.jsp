@@ -18,7 +18,12 @@
     <input type="text" id="company_name" name="company_name" value="<%= vendor != null && vendor.getCompany_name()!=null ? vendor.getCompany_name() : "" %>" required>
     <br><br>
     <label for="category">Category of Products:</label>
-    <input type="text" id="category" name="category" value="<%= vendor != null && vendor.getCategory()!=null ? vendor.getCategory() : "" %>" required>
+    <select id="category" name="category" required>
+        <option value="" disabled selected>-- Select a Role --</option>
+        <option value="Marketing & Creative Agencies">Marketing & Creative Agencies</option>
+        <option value="IT & Software Vendors">IT & Software Vendors</option>
+
+    </select>
     <br><br>
     <label for="phone_num">Phone Number:</label>
     <input type="number" id="phone_num" name="phone_num" value="<%= vendor != null && vendor.getPhone_num()!=null ? vendor.getPhone_num() : "" %>" required>
@@ -30,6 +35,9 @@
     <input type="text" id="payment_terms" name="payment_terms" value="<%= vendor != null && vendor.getPayment_terms()!=null ? vendor.getPayment_terms() : "" %>" required>
     <br><br>
     <button type="submit">Save and Next</button>
+</form>
+<form action="<%= request.getContextPath() %>/vendor/vendor-dashboard.jsp" method="get">
+        <button type="submit">Back</button>
 </form>
 </body>
 </html>

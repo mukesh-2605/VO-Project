@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
@@ -20,15 +21,15 @@ import java.util.Enumeration;
 @WebServlet("/vendor/other-info")
 public class OtherInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private final String email= Constants.email;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Vendor vendor =new Vendor();
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setString(1,email);
+            query.setInt(1,vendor.getId());
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -44,6 +45,8 @@ public class OtherInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         JSONObject updatedExtraInfo = new JSONObject();
         Enumeration<String> paramNames = request.getParameterNames();
 
@@ -53,13 +56,18 @@ public class OtherInfoServlet extends HttpServlet {
             updatedExtraInfo.put(param, value);
         }
 
-        String querySQL="UPDATE vendor_details SET other_details=? WHERE v_email=?";
+        String querySQL="UPDATE vendor_details SET other_details=?,status=? WHERE id=?";
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(querySQL))   {
             query.setString(1,updatedExtraInfo.toString());
-            query.setString(2,email);
-            ResultSet rs= query.executeQuery();
-            response.sendRedirect(request.getContextPath()+"/vendor/contact-info");
+            query.setString(2,"Pending");
+            query.setInt(3,vendor.getId());
+            query.executeUpdate();
+            response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
+            vendor.setOther_details(updatedExtraInfo.toString());
+            vendor.setStatus("Pending");
+            System.out.println(vendor.getId());
+            System.out.println(vendor.getStatus());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

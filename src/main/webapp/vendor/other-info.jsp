@@ -17,13 +17,17 @@
         String value = json.optString(key, "");
 %>
         <label for="<%= key %>"><%= key %>:</label>
-        <input type="text" name="<%= key %>" id="<%= key %>" value="<%= value %>" required/><br/>
+        <input type="text" name="<%= key %>" id="<%= key %>" value="<%= value %>" required/>
+        <br/><br>
 <%
     }
 %>
-    <button type="submit">Save and Next</button>
+    <button type="submit">Submit for Approval</button>
 
 </form>
-<form action="<%= request.getContextPath() %>/vendor/contact-info" method="get">
+<br><br>
+<form action="<%= request.getContextPath() %>/vendor/other-info" method="get">
      <button type="submit">Back</button>
 </form>
+
+

@@ -26,7 +26,7 @@ public class UserDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session == null || !"user".equals(session.getAttribute("userRole")) || session.getAttribute("loggedInUser") == null) {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("login.jsp");
             return; // Stop execution
         }
 

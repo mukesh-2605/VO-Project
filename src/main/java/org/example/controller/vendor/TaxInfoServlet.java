@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
@@ -18,15 +19,14 @@ import java.sql.SQLException;
 @WebServlet("/vendor/tax-info")
 public class TaxInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private final String email= Constants.email;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Vendor vendor =new Vendor();
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setString(1,email);
+            query.setInt(1,vendor.getId());
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -47,12 +47,14 @@ public class TaxInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         String GSTIN_or_VAT_or_TIN_type=request.getParameter("GSTIN_or_VAT_or_TIN_type");
         String GSTIN_or_VAT_or_TIN_number=request.getParameter("GSTIN_or_VAT_or_TIN_number");
         String PAN_number=request.getParameter("PAN_number");
         String business_licence_number=request.getParameter("business_licence_number");
 
-        String UDPATE_TAX_INFO_SQL="UPDATE vendor_details SET GSTIN_or_VAT_or_TIN_type=?, GSTIN_or_VAT_or_TIN_number=?, PAN_number=?, business_licence_number=? WHERE v_email=?";
+        String UDPATE_TAX_INFO_SQL="UPDATE vendor_details SET GSTIN_or_VAT_or_TIN_type=?, GSTIN_or_VAT_or_TIN_number=?, PAN_number=?, business_licence_number=? WHERE id=?";
 
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(UDPATE_TAX_INFO_SQL)){
@@ -61,7 +63,7 @@ public class TaxInfoServlet extends HttpServlet {
             query.setString(3,PAN_number);
             query.setString(4,business_licence_number);
 
-            query.setString(5,email);
+            query.setInt(5,vendor.getId());
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/bank-info");

@@ -60,22 +60,25 @@ public class LoginServlet extends HttpServlet {
 //                }
 //                break;
 //
-//            case "vendor":
-//                Vendor vendor = loginDAO.validateVendor(email, password);
-//                if (vendor != null) {
-//                    HttpSession session = request.getSession();
-//                    session.setAttribute("vendor", vendor); // Store the entire vendor object
-//                    session.setAttribute("userRole", "vendor");
-//                    response.sendRedirect("vendor_dashboard.jsp");
-//                    loginSuccess = true;
-//                }
-//                break;
+            case "vendor":
+                Vendor vendor = loginDAO.validateVendor(email, password);
+                if (vendor != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("vendor", vendor); // Store the entire vendor object
+                    session.setAttribute("userRole", "vendor");
+                    response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
+                    loginSuccess = true;
+                    System.out.println(vendor.getId());
+                    System.out.println(vendor.getStatus());
+
+                }
+                break;
         }
 
         // If login failed for any role, forward back to the login page with an error
         if (!loginSuccess) {
             request.setAttribute("errorMessage", "Invalid credentials for the selected role.");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 }
@@ -134,7 +137,7 @@ public class LoginServlet extends HttpServlet {
 //
 //        if (!loginSuccess) {
 //            request.setAttribute("errorMessage", "Invalid credentials for the selected role.");
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+//            request.getRequestDispatcher("/login.jsp").forward(request, response);
 //        }
 //    }
 //}

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
@@ -18,15 +19,16 @@ import java.sql.SQLException;
 @WebServlet("/vendor/contact-info")
 public class ContactInfoServlet extends HttpServlet {
     private final VendorDAO vendorDAO=new VendorDAO();
-    private final String email= Constants.email;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Vendor vendor =new Vendor();
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         try(Connection conn= vendorDAO.newConnection();
-            PreparedStatement query= conn.prepareStatement("select * from vendor_details where v_email=?"))   {
+            PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setString(1,email);
+            query.setInt(1,vendor.getId());
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -45,6 +47,8 @@ public class ContactInfoServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
+        Vendor vendor = (Vendor) session.getAttribute("vendor");
         String contact_person_name=request.getParameter("contact_person_name");
         String cp_role=request.getParameter("cp_role");
         String cp_phoneNum=request.getParameter("cp_phoneNum");
@@ -53,7 +57,7 @@ public class ContactInfoServlet extends HttpServlet {
         String cp_communication_channel=request.getParameter("cp_communication_channel");
 
         String UDPATE_CONTACT_INFO_SQL="UPDATE vendor_details SET cp_name=?, cp_role=?, cp_phone_num=?, cp_alter_phone_num=?"
-                +",cp_email=?,cp_communication_channel=? WHERE v_email=?";
+                +",cp_email=?,cp_communication_channel=? WHERE id=?";
 
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(UDPATE_CONTACT_INFO_SQL)){
@@ -63,7 +67,7 @@ public class ContactInfoServlet extends HttpServlet {
             query.setString(4,cp_alter_phoneNum);
             query.setString(5,cp_email);
             query.setString(6,cp_communication_channel);
-            query.setString(7,email);
+            query.setInt(7,vendor.getId());
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/other-info");
