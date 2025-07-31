@@ -4,7 +4,7 @@ public class User {
     private String email;
     private String name;
     private String phoneNumber;
-    private String role = "user";
+    private final static String role = "user";
     private String employmentId;
 
     // Default constructor
@@ -20,7 +20,6 @@ public class User {
         this.email = email;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.role = role;
         this.employmentId = employmentId;
     }
 
@@ -51,10 +50,6 @@ public class User {
 
     public String getRole() {
         return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getEmploymentId() {

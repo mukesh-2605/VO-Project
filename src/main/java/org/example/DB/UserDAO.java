@@ -31,7 +31,6 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setName(rs.getString("name"));
                 user.setPhoneNumber(rs.getString("phone_number"));
-                user.setRole(rs.getString("role"));
                 user.setEmploymentId(rs.getString("employement_id"));
             }
 

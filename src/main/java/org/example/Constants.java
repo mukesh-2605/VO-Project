@@ -1,7 +1,7 @@
 package org.example;
 
 public class Constants {
-    public static String email="hi123@gmail.com";
-    public static String role="vendor";
+    public static String email="";
+    public static String role="";
 
 }

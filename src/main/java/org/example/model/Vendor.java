@@ -6,6 +6,12 @@ public class Vendor {
     private String password;
     private String company_name;
 
+    public Vendor(String vendorName, String mail, String companyName) {
+        this.name = vendorName;
+        this.mail = mail;
+        this.company_name = companyName;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -81,6 +87,10 @@ public class Vendor {
      */
     public String getMail() {
         return mail;
+    }
+
+    public void setEmail(String mail){
+        this.mail = mail;
     }
 
     /**

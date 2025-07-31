@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class Admin {
-    private final String mail;
+    private String mail;
     private String name;
     private String password;
     String role = "admin";
@@ -21,11 +21,18 @@ public class Admin {
         this.password = password;
     }
 
+    public Admin() {
+    }
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
+    }
+
+    public void setEmail(String mail){
+        this.mail = mail;
     }
 
     /**

@@ -32,18 +32,26 @@ public class UserDashboardServlet extends HttpServlet {
 
         // Security check: If no session, redirect to login
         if (session == null || session.getAttribute("userEmail") == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("index.jsp");
             return;
         }
 
-        // --- Fetch Data ---
-        // Call a method in your DAO to get vendors with "Approved" status
-        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("Approved");
+        // --- Fetch Data for all three statuses ---
 
-        // Set the fetched list as a request attribute so the JSP can access it
+        // 1. Get Approved Vendors
+        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("Approved");
         request.setAttribute("approvedVendorList", approvedVendors);
 
-        // Forward the request (with the data) to the JSP page
+        // 2. Get Pending Vendors
+        List<Vendor> pendingVendors = vendorDAO.getVendorsByStatus("Pending");
+        request.setAttribute("pendingVendorList", pendingVendors);
+
+        // 3. Get Rejected Vendors
+        List<Vendor> rejectedVendors = vendorDAO.getVendorsByStatus("Rejected");
+        request.setAttribute("rejectedVendorList", rejectedVendors);
+
+        // Forward the request (with all the data) to the JSP page
         request.getRequestDispatcher("/user_dashboard.jsp").forward(request, response);
+
     }
 }
