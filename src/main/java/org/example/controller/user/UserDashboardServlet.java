@@ -31,13 +31,13 @@ public class UserDashboardServlet extends HttpServlet {
         }
 
         // --- Fetch Data for all three statuses ---
-        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("approved");
+        List<Vendor> approvedVendors = vendorDAO.getVendorsByStatus("Approved");
         request.setAttribute("approvedVendorList", approvedVendors);
 
-        List<Vendor> pendingVendors = vendorDAO.getVendorsByStatus("pending");
+        List<Vendor> pendingVendors = vendorDAO.getVendorsByStatus("Pending");
         request.setAttribute("pendingVendorList", pendingVendors);
 
-        List<Vendor> rejectedVendors = vendorDAO.getVendorsByStatus("rejected");
+        List<Vendor> rejectedVendors = vendorDAO.getVendorsByStatus("Rejected");
         request.setAttribute("rejectedVendorList", rejectedVendors);
 
         // Forward the request to the JSP page

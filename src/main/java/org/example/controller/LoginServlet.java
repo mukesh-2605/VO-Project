@@ -39,7 +39,9 @@ public class LoginServlet extends HttpServlet {
 
                     // --- STANDARDIZED SESSION KEYS ---
                     session.setAttribute("loggedInUser", user); // Store the entire user object
-                    session.setAttribute("userRole", "user");   // Store the role for easy checks
+                    session.setAttribute("userRole", "user");
+                    session.setAttribute("empID",user.getEmploymentId());
+                    session.setAttribute("userName",user.getName());
                     session.setAttribute("userEmail",email);
                     session.setAttribute("userPhoneNum",user.getPhoneNumber());
                     response.sendRedirect("dashboard");

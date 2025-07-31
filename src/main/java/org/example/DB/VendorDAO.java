@@ -136,63 +136,63 @@ public class VendorDAO {
 //        }
 //    }
 
-    public Vendor getVendorDetails(int id) throws SQLException {
-        String sql = "SELECT * FROM vendor_details WHERE id = ?";
+//    public Vendor getVendorDetails(int id) throws SQLException {
+//        String sql = "SELECT * FROM vendor_details WHERE id = ?";
+//
+//        try (Connection connection = getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//
+//            preparedStatement.setInt(1, id);
+//
+//            try (ResultSet rs = preparedStatement.executeQuery()) {
+//                if (rs.next()) {
+//                    return new Vendor(
+//                            rs.getInt("id"),
+//                            rs.getString("v_email"),
+//                            rs.getString("v_name"),
+//                            rs.getInt("userid"),
+//                            rs.getString("company_name"),
+//                            rs.getString("category"),
+//                            rs.getString("phone_num"),
+//                            rs.getString("website"),
+//                            rs.getString("payment_terms"),
+//                            rs.getString("b_country"),
+//                            rs.getString("b_address"),
+//                            rs.getString("b_city"),
+//                            rs.getString("b_state"),
+//                            rs.getString("b_zipcode"),
+//                            rs.getString("s_country"),
+//                            rs.getString("s_address"),
+//                            rs.getString("s_city"),
+//                            rs.getString("s_state"),
+//                            rs.getString("s_zipcode"),
+//                            rs.getString("GSTIN_or_VAT_or_TIN_type"),
+//                            rs.getString("GSTIN_or_VAT_or_TIN_number"),
+//                            rs.getString("PAN_number"),
+//                            rs.getString("business_licence_number"),
+//                            rs.getString("beneficiary_name"),
+//                            rs.getString("bank_name"),
+//                            rs.getString("acc_num"),
+//                            rs.getString("acc_type"),
+//                            rs.getString("routing_number"),
+//                            rs.getString("cp_name"),
+//                            rs.getString("cp_role"),
+//                            rs.getString("cp_phone_num"),
+//                            rs.getString("cp_alter_phone_num"),
+//                            rs.getString("cp_email"),
+//                            rs.getString("cp_communication_channel"),
+//                            rs.getString("status"),
+//                            rs.getString("remarks")
+//                    );
+//                } else {
+//                    return null; // No vendor found with this ID
+//                }
+//            }
 
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, id);
-
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    return new Vendor(
-                            rs.getInt("id"),
-                            rs.getString("v_email"),
-                            rs.getString("v_name"),
-                            rs.getInt("userid"),
-                            rs.getString("company_name"),
-                            rs.getString("category"),
-                            rs.getString("phone_num"),
-                            rs.getString("website"),
-                            rs.getString("payment_terms"),
-                            rs.getString("b_country"),
-                            rs.getString("b_address"),
-                            rs.getString("b_city"),
-                            rs.getString("b_state"),
-                            rs.getString("b_zipcode"),
-                            rs.getString("s_country"),
-                            rs.getString("s_address"),
-                            rs.getString("s_city"),
-                            rs.getString("s_state"),
-                            rs.getString("s_zipcode"),
-                            rs.getString("GSTIN_or_VAT_or_TIN_type"),
-                            rs.getString("GSTIN_or_VAT_or_TIN_number"),
-                            rs.getString("PAN_number"),
-                            rs.getString("business_licence_number"),
-                            rs.getString("beneficiary_name"),
-                            rs.getString("bank_name"),
-                            rs.getString("acc_num"),
-                            rs.getString("acc_type"),
-                            rs.getString("routing_number"),
-                            rs.getString("cp_name"),
-                            rs.getString("cp_role"),
-                            rs.getString("cp_phone_num"),
-                            rs.getString("cp_alter_phone_num"),
-                            rs.getString("cp_email"),
-                            rs.getString("cp_communication_channel"),
-                            rs.getString("status"),
-                            rs.getString("remarks")
-                    );
-                } else {
-                    return null; // No vendor found with this ID
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to fetch vendor with ID: " + id, e);
-        }
-    }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to fetch vendor with ID: " + id, e);
+//        }
+//    }
 
 }

@@ -8,16 +8,27 @@
 <body>
     <div>
         <%-- CORRECTED: Get the name from the loggedInUser object in the session --%>
-        <h1>Welcome, <c:out value="${sessionScope.userEmail}" default="[Not Found]"/>!</h1>
+        <h1>Welcome, <c:out value="${sessionScope.userName}" default="[Not Found]"/>!</h1>
 
         <p>This is your personal dashboard.</p>
         <hr>
 
         <%-- The rest of your JSP code remains the same... --%>
 
+
+
+
+
         <h3>Your Actions</h3>
         <p><a href="${pageContext.request.contextPath}/userProfile">View My Profile</a></p>
         <hr>
+
+
+
+        Add new Vendor
+
+
+
 
         <h2>Approved Vendors</h2>
         <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse;">
@@ -34,7 +45,7 @@
                         <c:forEach var="vendor" items="${approvedVendorList}">
                             <tr>
                                 <td><c:out value="${vendor.name}"/></td>
-                                <td><c:out value="${vendor.email}"/></td>
+                                <td><c:out value="${vendor.mail}"/></td>
                                 <td><c:out value="${vendor.company_name}"/></td>
                             </tr>
                         </c:forEach>
@@ -65,8 +76,8 @@
                         <c:forEach var="vendor" items="${pendingVendorList}">
                             <tr>
                                 <td><c:out value="${vendor.name}"/></td>
-                                <td><c:out value="${vendor.email}"/></td>
-                                <td><c:out value="${vendor.companyName}"/></td>
+                                <td><c:out value="${vendor.mail}"/></td>
+                                <td><c:out value="${vendor.company_name}"/></td>
                             </tr>
                         </c:forEach>
                     </c:when>
@@ -96,8 +107,8 @@
                         <c:forEach var="vendor" items="${rejectedVendorList}">
                             <tr>
                                 <td><c:out value="${vendor.name}"/></td>
-                                <td><c:out value="${vendor.email}"/></td>
-                                <td><c:out value="${vendor.companyName}"/></td>
+                                <td><c:out value="${vendor.mail}"/></td>
+                                <td><c:out value="${vendor.company_name}"/></td>
                             </tr>
                         </c:forEach>
                     </c:when>
