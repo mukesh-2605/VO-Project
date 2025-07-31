@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.Constants;
 import org.example.DB.VendorDAO;
 import org.example.model.Vendor;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -39,7 +40,7 @@ public class BusinessInfoServlet extends HttpServlet {
                 vendor=new Vendor(name,c_name,category,p_num,website,payment_terms);
 
                 request.setAttribute("vendor",vendor);
-                request.getRequestDispatcher("vendor/business-info.jsp").forward(request,response);
+                request.getRequestDispatcher("/vendor/business-info.jsp").forward(request,response);
             }
 
         } catch (SQLException e) {
@@ -59,7 +60,18 @@ public class BusinessInfoServlet extends HttpServlet {
         String website=request.getParameter("website");
         String payment_terms=request.getParameter("payment_terms");
         String UDPATE_BUSINESS_INFO_SQL="UPDATE vendor_details SET v_name=?, company_name=?,category=? ,"+
-                " phone_num=?,website=?, payment_terms=? WHERE v_email=?";
+                " phone_num=?,website=?, payment_terms=?,other_details=? WHERE v_email=?";
+
+        JSONObject uniqueFields = new JSONObject();
+
+        if (category.equals("Manufacturer")) {
+            uniqueFields.put("factoryLocation", JSONObject.NULL);
+            uniqueFields.put("productionCapacity", JSONObject.NULL);
+        } else if (category.equals("Distributor")) {
+            uniqueFields.put("regionsCovered", JSONObject.NULL);
+            uniqueFields.put("numberOfWarehouses", JSONObject.NULL);
+        }
+        // ... add other categories similarly
 
         try(Connection connection= vendorDAO.newConnection();
             PreparedStatement pstmt=connection.prepareStatement(UDPATE_BUSINESS_INFO_SQL)
@@ -70,7 +82,8 @@ public class BusinessInfoServlet extends HttpServlet {
             pstmt.setString(4,phone_num);
             pstmt.setString(5,website);
             pstmt.setString(6,payment_terms);
-            pstmt.setString(7,email);
+            pstmt.setString(7, uniqueFields.toString());
+            pstmt.setString(8,email);
             pstmt.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/address-info");
 

@@ -38,9 +38,17 @@ public class Vendor {
     private String cp_communication_channel;
     private String status;
     private String remarks;
+    private String other_details;
 
+    public String getOther_details() {
+        return other_details;
+    }
 
-    public Vendor(int id,String vendorName, String mail, String companyName) {
+    public void setOther_details(String other_details) {
+        this.other_details = other_details;
+    }
+
+    public Vendor(int id, String vendorName, String mail, String companyName) {
         this.id=id;
         this.name = vendorName;
         this.mail = mail;

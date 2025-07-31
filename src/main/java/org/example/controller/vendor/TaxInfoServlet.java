@@ -35,7 +35,9 @@ public class TaxInfoServlet extends HttpServlet {
                 vendor.setPAN_number(rs.getString("PAN_number"));
                 vendor.setBusiness_licence_number(rs.getString("business_licence_number"));
                 request.setAttribute("vendor",vendor);
+
                 request.getRequestDispatcher("/vendor/tax-info.jsp").forward(request,response);
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
