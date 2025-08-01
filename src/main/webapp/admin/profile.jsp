@@ -26,7 +26,7 @@
 
 <script>
     function goToUserDetails(userId, email) {
-        const url = '<%= request.getContextPath() %>/userProfile?id=' + userId;
+        const url = '<%= request.getContextPath() %>/admin/viewUserDetails?id=' + userId;
         window.location.href = url;
     }
 </script>
@@ -68,7 +68,7 @@
             List<User> users = (List<User>) request.getAttribute("users");
             for (User u : users) {
         %>
-        <tr style="cursor: pointer;" onclick="goToUserDetails('<%= u.getId() %>', '<%= u.getEmail() %>')">
+        <tr style="cursor: pointer;" onclick="goToUserDetails('<%= u.getEmploymentId() %>', '<%= u.getEmail() %>')">
             <td><%= u.getName() %></td>
             <td><%= u.getEmail() %></td>
         </tr>

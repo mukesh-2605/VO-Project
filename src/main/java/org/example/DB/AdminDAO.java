@@ -106,9 +106,10 @@ public class AdminDAO {
                  ResultSet rs2 = stmt2.executeQuery()) {
 
                 while (rs2.next()) {
+                    int emp_id = rs2.getInt("emp_id");
                     String email = rs2.getString("email");
                     String name = rs2.getString("name");
-                    users.add(new User(email, name));
+                    users.add(new User( emp_id, email, name));
                 }
 
                 System.out.println("USERS: " + users);

@@ -31,6 +31,7 @@ public class Profile extends HttpServlet {
             List<Vendor> vendors = adminDAO.getAllVendors();
             request.setAttribute("admin", admin); // Correct
             request.setAttribute("users", users);
+            System.out.println(users.get(0).getEmploymentId());
             request.setAttribute("vendors", vendors);
             request.getRequestDispatcher("/admin/profile.jsp").forward(request, response);
         } catch (SQLException e) {

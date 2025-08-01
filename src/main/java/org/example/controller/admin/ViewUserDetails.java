@@ -20,7 +20,6 @@ public class ViewUserDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session=request.getSession(false);
         try {
             int id;
             id = Integer.parseInt(request.getParameter("id"));
@@ -28,7 +27,8 @@ public class ViewUserDetails extends HttpServlet {
             //request.setAttribute("vendor", vendorDAO.getVendorDetails(id));
             User user = userDAO.getUserDetails(id);
             request.setAttribute("user", user); // Correct
-            request.getRequestDispatcher("/admin/view-vendor-details.jsp").forward(request, response);
+            System.out.println("this id " + id);
+            request.getRequestDispatcher("/admin/view-user-details.jsp").forward(request, response);
         } catch (ServletException e) {
             throw new ServletException("Server error", e);
         }

@@ -44,7 +44,7 @@ public class UserDAO {
     public User getUserDetails(int emp_id) {
         User user = null;
 
-        String sql = "SELECT * FROM user_profile_details WHERE id = ?";
+        String sql = "SELECT * FROM user_profile_details WHERE emp_id = ?";
 
         try (
                 Connection conn = DriverManager.getConnection(

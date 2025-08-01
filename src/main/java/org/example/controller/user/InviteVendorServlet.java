@@ -37,7 +37,7 @@ public class InviteVendorServlet extends HttpServlet {
         // Get the User object from the session
         User currentUser = (User) session.getAttribute("loggedInUser");
         // Get the employment ID from the User object
-        int currentUserId = Integer.parseInt(currentUser.getEmploymentId());
+        int currentUserId = currentUser.getEmploymentId();
 
         // Call the DAO method to pre-register the vendor
         Integer generatedID = vendorDAO.preRegisterVendor(vendorEmail, vendorPassword); // Assuming it returns Integer

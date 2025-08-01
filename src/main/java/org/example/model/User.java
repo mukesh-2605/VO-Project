@@ -17,6 +17,13 @@ public class User {
         this.email = email;
         this.name = name;
     }
+
+    public User(int emp_id, String email,String name){
+        this.employmentId = emp_id;
+        this.email = email;
+        this.name = name;
+    }
+
     public User(String email, String name, String phoneNumber, String role, int employmentId) {
         this.email = email;
         this.name = name;
