@@ -76,47 +76,104 @@ public class VendorDAO {
         return vendors;
     }
 
-    public List<Integer> preRegisterVendor(String email, String password) {
-        String sql = "INSERT INTO vendor_password_manager (v_email, password) VALUES (?, ?)";
-        List<Integer> result = new ArrayList<>();
-        String sql1 = "SELECT id from vendor_password_manager where v_email=?";
+//    public List<Integer> preRegisterVendor(String email, String password) {
+//        String sql = "INSERT INTO vendor_password_manager (v_email, password) VALUES (?, ?)";
+//        List<Integer> result = new ArrayList<>();
+//        String sql1 = "SELECT id from vendor_password_manager where v_email=?";
+//
+//        try (Connection conn = getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setString(1, email);
+//            ps.setString(2, password);
+//
+//            int rowsAffected = ps.executeUpdate();
+//
+//            // executeUpdate() returns the number of rows affected.
+//            // If it's greater than 0, the insert was successful.
+//             if (rowsAffected > 0)
+//                 result.add(1);
+//             else
+//                 result.add(0);
+//        } catch (SQLException e) {
+//            // This will catch errors, including violations of the UNIQUE constraint on v_email.
+//            System.out.println("sql");
+//            e.printStackTrace();
+//            return Arrays.asList(0, 0);
+//
+//        }
+//        try (Connection conn = getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setString(1, email);
+//
+//            ResultSet rs = ps.executeQuery(sql1);
+//
+//            if(rs.next()){
+//                result.add(rs.getInt("id"));
+//            }
+//        } catch (SQLException e) {
+//            // This will catch errors, including violations of the UNIQUE constraint on v_email.
+//            System.out.println("sql1");
+//            e.printStackTrace();
+//            return Arrays.asList(0, 0);
+//        }
+//        System.out.println("return successful");
+//        return result;
+//    }
+public int preRegisterVendor(String email, String password) {
+    String sql = "INSERT INTO vendor_password_manager (v_email, password) VALUES (?, ?)";
+    int generatedId = 0;
+
+    // Use a single try-with-resources block for one connection
+    try (Connection conn = getConnection();
+         // Tell the PreparedStatement that we want to retrieve the generated keys
+         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+        ps.setString(1, email);
+        ps.setString(2, password);
+
+        int rowsAffected = ps.executeUpdate();
+
+        // If the insert was successful, get the generated ID
+        if (rowsAffected > 0) {
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        }
+    } catch (SQLException e) {
+        // This will catch errors, including duplicate email addresses.
+        e.printStackTrace();
+    }
+
+    // Return the ID, or null if the operation failed.
+    return generatedId;
+}
+    public void insertIntoVendor(String email,int userid){
+        String sql = "INSERT INTO vendor_details (v_email, userid) VALUES (?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            // Set the first parameter (v_email) as a String
             ps.setString(1, email);
-            ps.setString(2, password);
+
+            // CORRECTED: Set the second parameter (userid) as an Integer
+            ps.setInt(2, userid);
 
             int rowsAffected = ps.executeUpdate();
 
-            // executeUpdate() returns the number of rows affected.
-            // If it's greater than 0, the insert was successful.
-             if (rowsAffected > 0)
-                 result.add(1);
-             else
-                 result.add(0);
-        } catch (SQLException e) {
-            // This will catch errors, including violations of the UNIQUE constraint on v_email.
-            e.printStackTrace();
-            return Arrays.asList(0, 0);
-
-        }
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, email);
-
-            ResultSet rs = ps.executeQuery(sql1);
-
-            if(rs.next()){
-                result.add(rs.getInt("id"));
+            // Optional: You can check if the insert was successful
+            if (rowsAffected > 0) {
+                System.out.println("Successfully inserted a partial record for vendor: " + email);
             }
+
         } catch (SQLException e) {
-            // This will catch errors, including violations of the UNIQUE constraint on v_email.
+            // This will catch errors, including duplicate email addresses.
             e.printStackTrace();
-            return Arrays.asList(0, 0);
         }
-        return result;
     }
 
     public Vendor getVendorDetails(int id) throws SQLException {

@@ -24,9 +24,10 @@ public class BusinessInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //String email=Constants.email;
+        System.out.println("came into buisness-info servlet");
         HttpSession session=request.getSession(false);
         Vendor vendor=null;
-        int id;
+        Integer id;
         if(session.getAttribute("userRole").equals("vendor")){
             vendor = (Vendor) session.getAttribute("vendor");
             id= vendor.getId();
@@ -34,22 +35,26 @@ public class BusinessInfoServlet extends HttpServlet {
             vendor =new Vendor();
             id= Integer.parseInt(request.getParameter("id"));
         }else{
+            System.out.println("came into else part");
             vendor=new Vendor();
-            id= (int) session.getAttribute("vid");
+            id= (Integer) session.getAttribute("vid");
         }
         try(Connection connection= vendorDAO.newConnection();
             PreparedStatement query=connection.prepareStatement("select * from vendor_details where id=?")){
 
             query.setInt(1,id);
             ResultSet rs=query.executeQuery();
+            System.out.println("came into try");
 
             if(rs.next()){
+                System.out.println("came into if rs.next");
                 String name=rs.getString("v_name");
                 String c_name=rs.getString("company_name");
                 String category=rs.getString("category");
                 String p_num=rs.getString("phone_num");
                 String website=rs.getString("website");
                 String payment_terms=rs.getString("payment_terms");
+
                 vendor.setName(name);
                 vendor.setCompany_name(c_name);
                 vendor.setCategory(category);
