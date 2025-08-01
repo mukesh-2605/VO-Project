@@ -22,10 +22,12 @@ public class VendorDisplayServlet extends HttpServlet {
             List<Vendor> requestedVendorList = vendorDAO.getVendorsByStatus("requested");
             List<Vendor> approvedVendorList = vendorDAO.getVendorsByStatus("approved");
             List<Vendor> reviewVendorList = vendorDAO.getVendorsByStatus("review");
+            List<Vendor> rejectedVendorList = vendorDAO.getVendorsByStatus("rejected");
             request.setAttribute("pendingVendors", pendingVendorList); // Send to JSP
             request.setAttribute("requestedVendors", requestedVendorList);
             request.setAttribute("approvedVendors", approvedVendorList);
             request.setAttribute("reviewVendors", reviewVendorList);
+            request.setAttribute("rejectedVendors", rejectedVendorList);
             request.getRequestDispatcher("/admin/vendor-display.jsp").forward(request, response);
         } catch (ServletException e) {
             throw new ServletException("Servlet error", e);

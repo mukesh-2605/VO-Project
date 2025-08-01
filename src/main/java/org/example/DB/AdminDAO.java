@@ -27,7 +27,8 @@ public class AdminDAO {
     private static final String SELECT_ALL_USERS_SQL = "SELECT pd.emp_id, pd.email, pd.name FROM user_profile_details pd JOIN emp_password_manager pm ON pd.emp_id = pm.emp_id";
     private static final String DELETE_VENDOR_SQL1 = "DELETE FROM vendor_details WHERE id = ?";
     private static final String DELETE_VENDOR_SQL2 = "DELETE FROM vendor_password_manager WHERE id = ?";
-    //private static final String SELECT_VENDOR_BY_STATUS = "SELECT "
+    private static final String UPDATE_VENDOR_STATUS_SQL1 = "UPDATE vendor_details SET status = ? WHERE id = ?";
+    private static final String UPDATE_VENDOR_STATUS_SQL2 = "UPDATE vendor_details SET status = ?, remarks = ? WHERE id = ?";
 
     protected Connection getConnection() throws SQLException {
         try {
@@ -117,7 +118,7 @@ public class AdminDAO {
         return users;
     }
 
-    public boolean deleteVendor(int id) throws SQLException {
+    public void deleteVendor(int id) throws SQLException {
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
 
@@ -131,11 +132,57 @@ public class AdminDAO {
                 preparedStatement2.executeUpdate();
 
                 connection.commit();  // Commit only if both succeed
-                return true;
             } catch (SQLException e) {
                 connection.rollback(); // Optional: rollback if something fails
                 printSQLException(e);
                 throw new RuntimeException("Failed to delete vendor with ID: " + id, e);
+            }
+        }
+    }
+
+    public void approveVendor(int id) throws SQLException {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement preparedStatement1 = connection.prepareStatement(UPDATE_VENDOR_STATUS_SQL1)) {
+
+                preparedStatement1.setString(1, "approved");
+                preparedStatement1.setInt(2, id);
+                preparedStatement1.executeUpdate();
+            } catch (SQLException e) {
+                printSQLException(e);
+                throw new RuntimeException("Failed to approve vendor with ID: " + id, e);
+            }
+        }
+    }
+
+    public void rejectVendor(int id, String remarks) throws SQLException {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement preparedStatement1 = connection.prepareStatement(UPDATE_VENDOR_STATUS_SQL2)) {
+
+                preparedStatement1.setString(1, "rejected");
+                preparedStatement1.setString(2, remarks);
+                preparedStatement1.setInt(3, id);
+                preparedStatement1.executeUpdate();
+            } catch (SQLException e) {
+                printSQLException(e);
+                throw new RuntimeException("Failed to reject vendor with ID: " + id, e);
+            }
+        }
+    }
+
+    public void requestDataToVendor(int id, String remarks) throws SQLException {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement preparedStatement1 = connection.prepareStatement(UPDATE_VENDOR_STATUS_SQL2)) {
+
+                preparedStatement1.setString(1, "review");
+                preparedStatement1.setString(2, remarks);
+                preparedStatement1.setInt(3, id);
+                preparedStatement1.executeUpdate();
+            } catch (SQLException e) {
+                printSQLException(e);
+                throw new RuntimeException("Failed to send data request to vendor with ID: " + id, e);
             }
         }
     }
