@@ -15,7 +15,6 @@
 
             <p><strong>Email:</strong> <c:out value="${user.email}"/></p>
             <p><strong>Name:</strong> <c:out value="${user.name}"/></p>
-            <p><strong>Email:</strong> <c:out value="${user.email}"/></p>
             <p><strong>Phone Number:</strong> <c:out value="${user.phoneNumber}"/></p>
             <p><strong>Role:</strong> <c:out value="${user.role}"/></p>
             <p><strong>Employment ID:</strong> <c:out value="${user.employmentId}"/></p>

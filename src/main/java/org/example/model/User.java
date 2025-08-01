@@ -5,7 +5,8 @@ public class User {
     private String name;
     private String phoneNumber;
     private final static String role = "user";
-    private String employmentId;
+    private int employmentId;
+    private int report_to;
 
     // Default constructor
     public User() {}
@@ -16,7 +17,7 @@ public class User {
         this.email = email;
         this.name = name;
     }
-    public User(String email, String name, String phoneNumber, String role, String employmentId) {
+    public User(String email, String name, String phoneNumber, String role, int employmentId) {
         this.email = email;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -40,6 +41,10 @@ public class User {
         this.name = name;
     }
 
+    public int getReportTo() { return report_to; }
+
+    public void setReportTo(int report_to) { this.report_to = report_to; }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -52,11 +57,11 @@ public class User {
         return role;
     }
 
-    public String getEmploymentId() {
+    public int getEmploymentId() {
         return employmentId;
     }
 
-    public void setEmploymentId(String employmentId) {
+    public void setEmploymentId(int employmentId) {
         this.employmentId = employmentId;
     }
 

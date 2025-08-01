@@ -49,16 +49,21 @@ public class LoginServlet extends HttpServlet {
                 }
                 break;
 
-//            case "admin":
-//                Admin admin = loginDAO.validateAdmin(email, password);
-//                if (admin != null) {
-//                    HttpSession session = request.getSession();
-//                    session.setAttribute("admin", admin); // Store the entire admin object
-//                    session.setAttribute("userRole", "admin");
-//                    response.sendRedirect("admin_dashboard.jsp");
-//                    loginSuccess = true;
-//                }
-//                break;
+            case "admin":
+                Admin admin = loginDAO.validateAdmin(email, password);
+                if (admin != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("admin", admin); // Store the entire admin object
+                    session.setAttribute("empId", admin.getEmployment_id());
+                    System.out.println("first id" + admin.getEmployment_id());
+                    session.setAttribute("userRole", "admin");
+                    session.setAttribute("userName",admin.getName());
+                    session.setAttribute("userEmail",email);
+                    session.setAttribute("userPhoneNum",admin.getPhoneNum());
+                    response.sendRedirect(request.getContextPath()+"/admin");
+                    loginSuccess = true;
+                }
+                break;
 //
             case "vendor":
                 Vendor vendor = loginDAO.validateVendor(email, password);

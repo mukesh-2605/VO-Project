@@ -7,6 +7,7 @@ package org.example.DB;
 
 
 import org.example.DBConfig;
+import org.example.model.Admin;
 import org.example.model.User;
 import org.example.model.Vendor;
 
@@ -29,6 +30,7 @@ public class AdminDAO {
     private static final String DELETE_VENDOR_SQL2 = "DELETE FROM vendor_password_manager WHERE id = ?";
     private static final String UPDATE_VENDOR_STATUS_SQL1 = "UPDATE vendor_details SET status = ? WHERE id = ?";
     private static final String UPDATE_VENDOR_STATUS_SQL2 = "UPDATE vendor_details SET status = ?, remarks = ? WHERE id = ?";
+    private static final String SELECT_ADMIN_DETAILS_SQL = "SELECT * FROM admin_profile_details WHERE emp_id = ?";
 
     protected Connection getConnection() throws SQLException {
         try {
@@ -184,6 +186,32 @@ public class AdminDAO {
                 printSQLException(e);
                 throw new RuntimeException("Failed to send data request to vendor with ID: " + id, e);
             }
+        }
+    }
+
+    public Admin getAdminDetails(int id) throws SQLException {
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ADMIN_DETAILS_SQL)) {
+
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    return new Admin(
+                            rs.getString("email"),
+                            rs.getString("name"),
+                            rs.getInt("emp_id"),
+                            rs.getString("phone_num")
+                            );
+                } else {
+                    return null; // No admin found with this ID
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch vendor with ID: " + id, e);
         }
     }
 

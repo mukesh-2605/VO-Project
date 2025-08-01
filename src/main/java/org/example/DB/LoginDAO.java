@@ -57,7 +57,7 @@ public class LoginDAO {
             if (rs.next()) {
                 user = new User();
 
-                user.setEmploymentId(String.valueOf(rs.getInt("emp_id")));
+                user.setEmploymentId(rs.getInt("emp_id"));
                 user.setEmail(rs.getString("email"));
                 user.setName(rs.getString("name"));
                 user.setPhoneNumber(rs.getString("phone_num"));
@@ -76,14 +76,17 @@ public class LoginDAO {
      * @return An Admin object if valid, otherwise null.
      */
     public Admin validateAdmin(String email, String password) {
-        String sql = "SELECT email, role FROM passwordManager WHERE email = ? AND password = ? AND role = 'admin'";
+        String sql = "SELECT apd.emp_id, apd.email, apd.name, apd.phone_num, apd.role FROM emp_password_manager epm JOIN admin_profile_details apd ON epm.emp_id = apd.emp_id WHERE epm.email = ? AND epm.password = ? AND epm.role = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setString(2, password);
+            ps.setString(3, "admin");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Admin admin = new Admin();
                 admin.setEmail(rs.getString("email"));
+                admin.setEmployment_id(rs.getInt("emp_id"));
+                admin.setName(rs.getString("name"));
                 return admin;
             }
         } catch (SQLException e) {

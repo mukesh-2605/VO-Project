@@ -21,8 +21,8 @@
             <button type="submit">View Vendors</button>
         </form>
 
-        <form action="<%= request.getContextPath() %>/admin/display" method="get">
-            <button type="submit">View Users</button>
-        </form>
+        <form action="<%= request.getContextPath() %>/admin/profile" method="get">
+                    <button type="submit">View Profile</button>
+                </form>
 </body>
 </html>

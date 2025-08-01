@@ -3,12 +3,14 @@ package org.example.model;
 public class Admin {
     private String mail;
     private String name;
-    private String employment_id ;
+    private int employment_id;
+    private String phone_num;
 
-    public Admin(String mail, String name, String employment_id){
+    public Admin(String mail, String name, int employment_id, String phone_num){
         this.mail = mail;
         this.name = name;
         this.employment_id=employment_id;
+        this.phone_num = phone_num;
     }
 
     public Admin(String mail, String name){
@@ -44,11 +46,19 @@ public class Admin {
         return mail;
     }
 
-    public String getEmployment_id() {
+    public int getEmployment_id() {
         return employment_id;
     }
 
-    public void setEmployment_id(String employment_id) {
+    public void setEmployment_id(int employment_id) {
         this.employment_id = employment_id;
+    }
+
+    public String getPhoneNum() {
+        return phone_num;
+    }
+
+    public void setPhoneNum(String phone_num) {
+        this.phone_num = phone_num;
     }
 }
