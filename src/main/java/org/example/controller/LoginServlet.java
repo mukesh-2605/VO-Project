@@ -66,6 +66,7 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("vendor", vendor); // Store the entire vendor object
                     session.setAttribute("userRole", "vendor");
+                    session.setAttribute("id",vendor.getId());
                     response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
                     loginSuccess = true;
                     System.out.println(vendor.getId());

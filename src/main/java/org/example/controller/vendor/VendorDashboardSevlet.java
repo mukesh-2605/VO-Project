@@ -20,6 +20,7 @@ public class VendorDashboardSevlet extends HttpServlet {
             return;
         }
         Vendor vendor= (Vendor) session.getAttribute("vendor");
+
         request.setAttribute("vendor",vendor);
         request.getRequestDispatcher("/vendor/vendor-dashboard.jsp").forward(request, response);
     }

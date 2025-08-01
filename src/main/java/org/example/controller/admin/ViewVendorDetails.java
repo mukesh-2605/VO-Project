@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.DB.VendorDAO;
 import org.example.model.User;
 import org.example.model.Vendor;
@@ -19,8 +20,16 @@ public class ViewVendorDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session=request.getSession(false);
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id;
+            if(session.getAttribute("userRole").equals("vendor")){
+                id= (int) session.getAttribute("id");
+            }
+            else{
+                id = Integer.parseInt(request.getParameter("id"));
+            }
+
             //request.setAttribute("vendor", vendorDAO.getVendorDetails(id));
             Vendor vendor = vendorDAO.getVendorDetails(id);
             request.setAttribute("vendor", vendor); // Correct
