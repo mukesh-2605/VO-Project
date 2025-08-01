@@ -23,11 +23,18 @@ public class BankInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
-        try(Connection conn= vendorDAO.newConnection();
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }        try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -48,7 +55,15 @@ public class BankInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         String beneficiary_name=request.getParameter("beneficiary_name");
         String bank_name=request.getParameter("bank_name");
         String acc_num=request.getParameter("acc_num");
@@ -65,7 +80,7 @@ public class BankInfoServlet extends HttpServlet {
             query.setString(4,acc_type);
             query.setString(5,routing_number);
 
-            query.setInt(6,vendor.getId());
+            query.setInt(6,id);
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/contact-info");

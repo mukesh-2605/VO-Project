@@ -23,11 +23,18 @@ public class AddressInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
-        try(Connection conn= vendorDAO.newConnection();
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }        try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -55,8 +62,15 @@ public class AddressInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
-        String b_country=request.getParameter("b_country");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }        String b_country=request.getParameter("b_country");
         String b_address=request.getParameter("b_address");
         String b_city=request.getParameter("b_city");
         String b_state=request.getParameter("b_state");
@@ -84,7 +98,7 @@ public class AddressInfoServlet extends HttpServlet {
             query.setString(8,s_city);
             query.setString(9,s_state);
             query.setString(10,s_zipcode);
-            query.setInt(11,vendor.getId());
+            query.setInt(11,id);
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/tax-info");

@@ -25,11 +25,19 @@ public class BusinessInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //String email=Constants.email;
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         try(Connection connection= vendorDAO.newConnection();
             PreparedStatement query=connection.prepareStatement("select * from vendor_details where id=?")){
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs=query.executeQuery();
 
             if(rs.next()){
@@ -61,7 +69,15 @@ public class BusinessInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         String email= vendor.getMail();
         String name=request.getParameter("name");
         String company_name=request.getParameter("company_name");
@@ -96,7 +112,7 @@ public class BusinessInfoServlet extends HttpServlet {
             pstmt.setString(5,website);
             pstmt.setString(6,payment_terms);
             pstmt.setString(7, uniqueFields.toString());
-            pstmt.setInt(8,vendor.getId());
+            pstmt.setInt(8,id);
             pstmt.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/address-info");
 

@@ -24,11 +24,18 @@ public class ContactInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
-        try(Connection conn= vendorDAO.newConnection();
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }        try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -48,7 +55,15 @@ public class ContactInfoServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         String contact_person_name=request.getParameter("contact_person_name");
         String cp_role=request.getParameter("cp_role");
         String cp_phoneNum=request.getParameter("cp_phoneNum");
@@ -67,7 +82,7 @@ public class ContactInfoServlet extends HttpServlet {
             query.setString(4,cp_alter_phoneNum);
             query.setString(5,cp_email);
             query.setString(6,cp_communication_channel);
-            query.setInt(7,vendor.getId());
+            query.setInt(7,id);
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/other-info");

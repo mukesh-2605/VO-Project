@@ -25,11 +25,18 @@ public class OtherInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
-        try(Connection conn= vendorDAO.newConnection();
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }        try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -46,7 +53,15 @@ public class OtherInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         JSONObject updatedExtraInfo = new JSONObject();
         Enumeration<String> paramNames = request.getParameterNames();
 
@@ -61,13 +76,11 @@ public class OtherInfoServlet extends HttpServlet {
             PreparedStatement query= conn.prepareStatement(querySQL))   {
             query.setString(1,updatedExtraInfo.toString());
             query.setString(2,"Pending");
-            query.setInt(3,vendor.getId());
+            query.setInt(3,id);
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
             vendor.setOther_details(updatedExtraInfo.toString());
             vendor.setStatus("Pending");
-            System.out.println(vendor.getId());
-            System.out.println(vendor.getStatus());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

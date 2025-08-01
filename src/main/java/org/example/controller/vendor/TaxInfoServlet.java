@@ -22,11 +22,19 @@ public class TaxInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement("select * from vendor_details where id=?"))   {
 
-            query.setInt(1,vendor.getId());
+            query.setInt(1,id);
             ResultSet rs= query.executeQuery();
 
             if(rs.next()){
@@ -48,7 +56,15 @@ public class TaxInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession(false);
-        Vendor vendor = (Vendor) session.getAttribute("vendor");
+        Vendor vendor=null;
+        int id;
+        if(session.getAttribute("userRole").equals("vendor")){
+            vendor = (Vendor) session.getAttribute("vendor");
+            id= vendor.getId();
+        }else{
+            vendor=new Vendor();
+            id= (int) session.getAttribute("vid");
+        }
         String GSTIN_or_VAT_or_TIN_type=request.getParameter("GSTIN_or_VAT_or_TIN_type");
         String GSTIN_or_VAT_or_TIN_number=request.getParameter("GSTIN_or_VAT_or_TIN_number");
         String PAN_number=request.getParameter("PAN_number");
@@ -63,7 +79,7 @@ public class TaxInfoServlet extends HttpServlet {
             query.setString(3,PAN_number);
             query.setString(4,business_licence_number);
 
-            query.setInt(5,vendor.getId());
+            query.setInt(5,id);
 
             query.executeUpdate();
             response.sendRedirect(request.getContextPath()+"/vendor/bank-info");
