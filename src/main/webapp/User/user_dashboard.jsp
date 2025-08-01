@@ -25,8 +25,11 @@
 
 
 
-        Add new Vendor
+        <%-- ====================== NEW LINK ADDED HERE ======================--%>
 
+        <p><a href="${pageContext.request.contextPath/inviteVendor}">Add New Vendor</a></p>
+
+         <%=============================================================== --%>
 
 
 
