@@ -76,6 +76,49 @@ public class VendorDAO {
         return vendors;
     }
 
+    public List<Integer> preRegisterVendor(String email, String password) {
+        String sql = "INSERT INTO vendor_password_manager (v_email, password) VALUES (?, ?)";
+        List<Integer> result = new ArrayList<>();
+        String sql1 = "SELECT id from vendor_password_manager where v_email=?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            int rowsAffected = ps.executeUpdate();
+
+            // executeUpdate() returns the number of rows affected.
+            // If it's greater than 0, the insert was successful.
+             if (rowsAffected > 0)
+                 result.add(1);
+             else
+                 result.add(0);
+        } catch (SQLException e) {
+            // This will catch errors, including violations of the UNIQUE constraint on v_email.
+            e.printStackTrace();
+            return Arrays.asList(0, 0);
+
+        }
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery(sql1);
+
+            if(rs.next()){
+                result.add(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            // This will catch errors, including violations of the UNIQUE constraint on v_email.
+            e.printStackTrace();
+            return Arrays.asList(0, 0);
+        }
+        return result;
+    }
+
 //    public Vendor getVendorDetails(int id) throws SQLException {
 //        String sql = "SELECT * FROM vendor_details WHERE id = ?";
 //
