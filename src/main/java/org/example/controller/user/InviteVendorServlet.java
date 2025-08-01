@@ -53,7 +53,7 @@ public class InviteVendorServlet extends HttpServlet {
             // Store the new vendor's ID in the session for the next step
             session.setAttribute("vid", generatedID);
 
-            response.sendRedirect(request.getContextPath() + "/vendor/business-info");
+            response.sendRedirect(request.getContextPath() + "/vendor/business-info?id=0");
 
         } else {
             // --- FAILURE ---

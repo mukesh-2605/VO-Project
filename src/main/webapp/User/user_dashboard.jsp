@@ -13,12 +13,6 @@
         <p>This is your personal dashboard.</p>
         <hr>
 
-        <%-- The rest of your JSP code remains the same... --%>
-
-
-
-
-
         <h3>Your Actions</h3>
         <p><a href="${pageContext.request.contextPath}/userProfile">View My Profile</a></p>
         <hr>
@@ -71,6 +65,7 @@
                     <th>Vendor Name</th>
                     <th>Contact Email</th>
                     <th>Company Name</th>
+                    <th>Review</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,6 +76,9 @@
                                 <td><c:out value="${vendor.name}"/></td>
                                 <td><c:out value="${vendor.mail}"/></td>
                                 <td><c:out value="${vendor.company_name}"/></td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/vendor/business-info?id=${vendor.id}">Edit</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </c:when>
@@ -125,7 +123,9 @@
         </table>
 
         <hr>
-        <a href="index.jsp">Logout</a>
     </div>
+    <form action="<%= request.getContextPath() %>/logout" method="get">
+        <button type="submit">logout</button>
+    </form>
 </body>
 </html>

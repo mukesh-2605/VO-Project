@@ -44,6 +44,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("userName",user.getName());
                     session.setAttribute("userEmail",email);
                     session.setAttribute("userPhoneNum",user.getPhoneNumber());
+                    session.setAttribute("report_to",user.getReportTo());
                     response.sendRedirect("dashboard");
                     loginSuccess = true;
                 }

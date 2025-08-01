@@ -31,11 +31,12 @@ public class BusinessInfoServlet extends HttpServlet {
         if(session.getAttribute("userRole").equals("vendor")){
             vendor = (Vendor) session.getAttribute("vendor");
             id= vendor.getId();
-        }else if(Boolean.parseBoolean(request.getParameter("id"))){
+        }else if(Integer.parseInt(request.getParameter("id"))!=0){
             vendor =new Vendor();
             id= Integer.parseInt(request.getParameter("id"));
         }else{
-            System.out.println("came into else part");
+            System.out.println(request.getParameter("id"));
+            System.out.println(Boolean.parseBoolean(request.getParameter("id")));
             vendor=new Vendor();
             id= (Integer) session.getAttribute("vid");
         }

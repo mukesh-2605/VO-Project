@@ -39,7 +39,7 @@ public class UserProfileServlet extends HttpServlet {
         String email = (String) session.getAttribute("userEmail");
 
         // Fetch the full user object from the database.
-        User user = userDAO.getUserByEmail(email);
+        User user = userDAO.getUserDetails((int)session.getAttribute("empID"));
 
         // Place the user object in the request scope to be accessed by the JSP.
         request.setAttribute("user", user);

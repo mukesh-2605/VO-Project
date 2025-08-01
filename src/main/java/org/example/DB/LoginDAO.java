@@ -41,7 +41,7 @@ public class LoginDAO {
     public User validateUser(String email, String password) {
         User user = null;
 
-        String sql = "SELECT upd.emp_id, upd.email, upd.name, upd.phone_num, upd.role " +
+        String sql = "SELECT upd.emp_id, upd.email, upd.name, upd.phone_num, upd.role, upd.report_to " +
                 "FROM emp_password_manager epm " +
                 "JOIN user_profile_details upd ON epm.emp_id = upd.emp_id " +
                 "WHERE epm.email = ? AND epm.password = ? AND epm.role = 'user'";
@@ -61,6 +61,7 @@ public class LoginDAO {
                 user.setEmail(rs.getString("email"));
                 user.setName(rs.getString("name"));
                 user.setPhoneNumber(rs.getString("phone_num"));
+                user.setReportTo(rs.getInt("report_to"));
 
             }
         } catch (SQLException e) {
