@@ -30,6 +30,9 @@ public class BusinessInfoServlet extends HttpServlet {
         if(session.getAttribute("userRole").equals("vendor")){
             vendor = (Vendor) session.getAttribute("vendor");
             id= vendor.getId();
+        }else if(Boolean.parseBoolean(request.getParameter("id"))){
+            vendor =new Vendor();
+            id= Integer.parseInt(request.getParameter("id"));
         }else{
             vendor=new Vendor();
             id= (int) session.getAttribute("vid");

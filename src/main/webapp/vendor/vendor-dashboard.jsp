@@ -17,6 +17,6 @@
 
 
 
-<form action="<%= request.getContextPath() %>/login.jsp" method="get">
+<form action="<%= request.getContextPath() %>/logout" method="get">
     <button type="submit">logout</button>
 </form>
