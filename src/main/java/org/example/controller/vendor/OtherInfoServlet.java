@@ -78,7 +78,11 @@ public class OtherInfoServlet extends HttpServlet {
             query.setString(2,"Pending");
             query.setInt(3,id);
             query.executeUpdate();
-            response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
+            if(session.getAttribute("userRole").equals("vendor")){
+                response.sendRedirect(request.getContextPath()+"/vendor/vendor-dashboard.jsp");
+            }else{
+                response.sendRedirect(request.getContextPath()+"/User/user_dashboard.jsp");
+            }
             vendor.setOther_details(updatedExtraInfo.toString());
             vendor.setStatus("Pending");
 
