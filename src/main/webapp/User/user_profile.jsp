@@ -18,7 +18,7 @@
             <p><strong>Phone Number:</strong> <c:out value="${user.phoneNumber}"/></p>
             <p><strong>Role:</strong> <c:out value="${user.role}"/></p>
             <p><strong>Employment ID:</strong> <c:out value="${user.employmentId}"/></p>
-
+            <p><strong>Admin ID:</strong> <c:out value="${user.reportTo}"/></p>
 
         </c:when>
 
@@ -27,9 +27,6 @@
             <p>Could not retrieve user profile information. Please try again later.</p>
         </c:otherwise>
     </c:choose>
-
-
-
 
     <hr>
     <a href="dashboard">Back to Dashboard</a>

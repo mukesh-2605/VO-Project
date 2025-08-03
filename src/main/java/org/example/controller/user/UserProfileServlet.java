@@ -43,6 +43,7 @@ public class UserProfileServlet extends HttpServlet {
 
         // Place the user object in the request scope to be accessed by the JSP.
         request.setAttribute("user", user);
+        System.out.println(user.getReportTo());
 
         // Forward the request to the JSP page for rendering.
         request.getRequestDispatcher("/User/user_profile.jsp").forward(request, response);

@@ -6,7 +6,7 @@ public class User {
     private String phoneNumber;
     private final static String role = "user";
     private int employmentId;
-    private int report_to;
+    private int reportTo;
 
     // Default constructor
     public User() {}
@@ -48,9 +48,9 @@ public class User {
         this.name = name;
     }
 
-    public int getReportTo() { return report_to; }
+    public int getReportTo() { return reportTo; }
 
-    public void setReportTo(int report_to) { this.report_to = report_to; }
+    public void setReportTo(int reportTo) { this.reportTo = reportTo; }
 
     public String getPhoneNumber() {
         return phoneNumber;
