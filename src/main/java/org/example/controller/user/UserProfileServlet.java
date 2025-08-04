@@ -30,11 +30,10 @@ public class UserProfileServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("userEmail") == null) {
-            response.sendRedirect("/login.jsp");
+        if (session == null || session.getAttribute("userRole") != "user") {
+            response.sendRedirect(request.getContextPath()+"/login.jsp");
             return;
         }
-
         // Get the user's email securely from the session.
         String email = (String) session.getAttribute("userEmail");
 

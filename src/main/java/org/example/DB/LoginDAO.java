@@ -38,10 +38,6 @@ public class LoginDAO {
      * @return A User object if valid, otherwise null.
      */
 
-
-
-
-
     public User validateUser(String email, String password) {
         User user = null;
 

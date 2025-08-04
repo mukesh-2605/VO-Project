@@ -16,6 +16,9 @@
       This section tells the server which file to show by default when a user
       visits the root directory of your application (e.g., /VO-Project/).
     -->
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>

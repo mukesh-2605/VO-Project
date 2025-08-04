@@ -65,6 +65,7 @@
                     <th>Vendor Name</th>
                     <th>Contact Email</th>
                     <th>Company Name</th>
+                    <th>Review</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +76,9 @@
                                 <td><c:out value="${vendor.name}"/></td>
                                 <td><c:out value="${vendor.mail}"/></td>
                                 <td><c:out value="${vendor.company_name}"/></td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/vendor/business-info?id=${vendor.id}">Edit</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </c:when>
