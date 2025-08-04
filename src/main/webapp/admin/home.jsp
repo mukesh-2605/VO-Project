@@ -22,8 +22,12 @@
         </form>
 
         <form action="<%= request.getContextPath() %>/admin/profile" method="get">
-                    <button type="submit">View Profile</button>
-                </form>
+            <button type="submit">View Profile</button>
+        </form>
+
+        <form action="<%= request.getContextPath() %>/change-password" method="get">
+            <button type="submit">Change Password</button>
+        </form>
 
         <form action="<%= request.getContextPath() %>/logout" method="get">
             <button type="submit">logout</button>

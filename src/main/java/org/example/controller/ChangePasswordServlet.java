@@ -44,7 +44,8 @@ public class ChangePasswordServlet extends HttpServlet {
                 stmt.setString(1,password);
                 stmt.setInt(2,emp_id);
                 stmt.executeUpdate();
-                request.getRequestDispatcher("/admin").forward(request,response);
+                //request.getRequestDispatcher("/admin").forward(request,response);
+                response.sendRedirect(request.getContextPath()+"/admin/home.jsp");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -57,7 +58,7 @@ public class ChangePasswordServlet extends HttpServlet {
                 stmt.setString(1,password);
                 stmt.setInt(2,emp_id);
                 stmt.executeUpdate();
-                request.getRequestDispatcher("/dashboard").forward(request,response);
+                response.sendRedirect(request.getContextPath()+"/user/user_dashboard.jsp");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
