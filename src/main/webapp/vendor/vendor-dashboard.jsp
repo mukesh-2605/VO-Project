@@ -14,6 +14,9 @@
     </form>
 <% } %>
 
+<form action="<%= request.getContextPath() %>/change-password" method="get">
+    <button type="submit">Change Password</button>
+</form>
 
 
 
