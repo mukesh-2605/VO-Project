@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="org.json.JSONObject" %>
+<%@ page import="java.util.Iterator" %>
 <%@ page import="org.example.model.Vendor" %>
 <%@ page import="org.example.Helper" %>
 <%
@@ -8,7 +10,12 @@
 %>
 
 <%
-    Vendor vendor = (Vendor) request.getAttribute("vendor");
+    Vendor vendor;
+    if(session.getAttribute("userRole").equals("vendor")){
+        vendor = (Vendor) session.getAttribute("vendor");
+    }else{
+        vendor = (Vendor) request.getAttribute("vendor");
+    }
 %>
 <html>
 <head>
@@ -63,6 +70,25 @@
 <h3>Status</h3>
 <p><strong>Onboarding Status:</strong> <%= Helper.show(vendor.getStatus()) %></p>
 <p><strong>Admin Remarks:</strong> <%= Helper.show(vendor.getRemarks()) %></p>
+
+<h2>Extra Info</h2>
+<%
+    String other_details_Json = vendor.getOther_details();
+    if (other_details_Json != null && !other_details_Json.trim().isEmpty()){
+        JSONObject json = new JSONObject(other_details_Json);
+            Iterator<String> keys = json.keys();
+
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = json.optString(key, "-");
+%>
+                <p><strong><%= key %>: </strong> <%= value %></p>
+<%
+            }
+    }else {
+        System.out.println("<p>No additional information available.</p>");
+    }
+%>
 
 </body>
 </html>

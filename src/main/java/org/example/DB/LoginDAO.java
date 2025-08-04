@@ -28,6 +28,10 @@ public class LoginDAO {
             throw new SQLException("MySQL JDBC Driver not found.", e);
         }
     }
+    public Connection newConnection() throws SQLException {
+        Connection connection=getConnection();
+        return connection;
+    }
 
     /**
      * Validates credentials for a 'user'.
