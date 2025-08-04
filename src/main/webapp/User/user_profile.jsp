@@ -27,7 +27,8 @@
             <p>Could not retrieve user profile information. Please try again later.</p>
         </c:otherwise>
     </c:choose>
-
+    <hr>
+    <a href="${pageContext.request.contextPath}/change-password">Change Password</a>
     <hr>
     <a href="dashboard">Back to Dashboard</a>
 

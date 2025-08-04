@@ -51,14 +51,14 @@ public class ChangePasswordServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }else if (role.equals("user")){
-            int emp_id= (int) session.getAttribute("empId");
+            int emp_id= (int) session.getAttribute("empID");
             String USER_SQL="UPDATE emp_password_manager SET password=? WHERE emp_id=?";
             try(Connection conn=loginDAO.newConnection();
                 PreparedStatement stmt=conn.prepareStatement(USER_SQL)){
                 stmt.setString(1,password);
                 stmt.setInt(2,emp_id);
                 stmt.executeUpdate();
-                response.sendRedirect(request.getContextPath()+"/user/user_dashboard.jsp");
+                response.sendRedirect(request.getContextPath()+"/dashboard");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
