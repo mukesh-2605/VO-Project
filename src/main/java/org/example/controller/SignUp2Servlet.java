@@ -28,4 +28,9 @@ public class SignUp2Servlet extends HttpServlet {
 
     }
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/sign-up1.jsp").forward(request, response);
+    }
+
 }

@@ -10,12 +10,7 @@
 %>
 
 <%
-    Vendor vendor;
-    if(session.getAttribute("userRole").equals("vendor")){
-        vendor = (Vendor) session.getAttribute("vendor");
-    }else{
-        vendor = (Vendor) request.getAttribute("vendor");
-    }
+        Vendor vendor = (Vendor) request.getAttribute("vendor");
 %>
 <html>
 <head>

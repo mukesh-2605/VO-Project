@@ -29,11 +29,16 @@ public class RequestVendorServlet extends HttpServlet {
         String password = mail;
         Vendor newVendor = new Vendor(mail, password);
         try {
-            adminDAO.requestNewVendor(mail);
+            boolean status = adminDAO.requestNewVendor(mail);
             System.out.println("Vendor requested: " + mail);
             //response.sendRedirect(request.getContextPath() + "/admin");
-            response.setContentType("text/html");
-            response.getWriter().write("<script>window.location.replace('" + request.getContextPath() + "/admin/vendors');</script>");
+//            response.setContentType("text/html");
+//            response.getWriter().write("<script>window.location.replace('" + request.getContextPath() + "/admin/vendors');</script>");
+            if (status) {
+                response.sendRedirect(request.getContextPath() + "/admin/request-vendor.jsp?status=success");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/request-vendor.jsp?status=exists");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -222,7 +222,8 @@ public int preRegisterVendor(String email, String password) {
                             rs.getString("cp_email"),
                             rs.getString("cp_communication_channel"),
                             rs.getString("status"),
-                            rs.getString("remarks")
+                            rs.getString("remarks"),
+                            rs.getString("other_details")
                     );
                 } else {
                     return null; // No vendor found with this ID

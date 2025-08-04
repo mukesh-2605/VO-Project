@@ -64,7 +64,7 @@ public class Vendor {
     }
 
     //Constructor for vendor_details table (everything except password)
-    public Vendor(int id, String mail, String name, int userid, String company_name, String category, String phone_num, String website, String payment_terms, String b_country, String b_address, String b_city, String b_state, String b_zipcode, String s_country, String s_address, String s_city, String s_state, String s_zipcode, String GSTIN_or_VAT_or_TIN_type, String GSTIN_or_VAT_or_TIN_number, String PAN_number, String business_licence_number, String beneficiary_name, String bank_name, String acc_num, String acc_type, String routing_number, String contact_person_name, String cp_role, String cp_phoneNum, String cp_alter_phoneNum, String cp_email, String cp_communication_channel, String status, String remarks) {
+    public Vendor(int id, String mail, String name, int userid, String company_name, String category, String phone_num, String website, String payment_terms, String b_country, String b_address, String b_city, String b_state, String b_zipcode, String s_country, String s_address, String s_city, String s_state, String s_zipcode, String GSTIN_or_VAT_or_TIN_type, String GSTIN_or_VAT_or_TIN_number, String PAN_number, String business_licence_number, String beneficiary_name, String bank_name, String acc_num, String acc_type, String routing_number, String contact_person_name, String cp_role, String cp_phoneNum, String cp_alter_phoneNum, String cp_email, String cp_communication_channel, String status, String remarks, String other_details) {
         this.id = id;
         this.mail = mail;
         this.name = name;
@@ -101,6 +101,7 @@ public class Vendor {
         this.cp_communication_channel = cp_communication_channel;
         this.status = status;
         this.remarks = remarks;
+        this.other_details = other_details;
 
     }
 

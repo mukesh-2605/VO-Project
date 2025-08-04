@@ -45,10 +45,26 @@ public class AdminDAO {
         }
     }
 
+    private boolean isAlreadyRegistered(String mail) throws SQLException {
+        String checkSql = "SELECT 1 FROM vendor_password_manager WHERE v_email = ? LIMIT 1";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(checkSql)) {
+            ps.setString(1, mail);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // true if any record found
+            }
+        }
+    }
+
+
 
     // ADD_VENDORS_SQL
     // add servlet in admin and get vendor mail and put here
-    public void requestNewVendor(String mail) throws SQLException {
+    public boolean requestNewVendor(String mail) throws SQLException {
+        if (isAlreadyRegistered(mail)) {
+            return false; // Email already exists
+        }
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
 
@@ -69,7 +85,7 @@ public class AdminDAO {
                 printSQLException(e);
             }
         }
-
+        return true;
     }
 
     public List<Vendor> getAllVendors() throws SQLException {

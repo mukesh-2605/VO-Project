@@ -20,6 +20,7 @@
 <p><strong>Name:</strong> <%= Helper.show(user.getName()) %></p>
 <p><strong>Email:</strong> <%= Helper.show(user.getEmail()) %></p>
 <p><strong>Phone Number:</strong> <%= Helper.show(user.getPhoneNumber()) %></p>
+<p><strong>Report To:</strong> <%= Helper.showInt(user.getReportTo()) %></p>
 <p><strong>Employment ID:</strong> <%= Helper.showInt(user.getEmploymentId()) %></p>
 
 </body>

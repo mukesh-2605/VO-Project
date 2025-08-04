@@ -26,7 +26,7 @@
 
 </form>
 <br><br>
-<form action="<%= request.getContextPath() %>/vendor/other-info" method="get">
+<form action="<%= request.getContextPath() %>/vendor/contact-info" method="get">
      <button type="submit">Back</button>
 </form>
 

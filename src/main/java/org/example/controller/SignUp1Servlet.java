@@ -67,4 +67,9 @@ public class SignUp1Servlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/sign-up1.jsp").forward(request, response);
+    }
 }

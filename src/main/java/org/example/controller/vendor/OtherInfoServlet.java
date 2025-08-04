@@ -75,7 +75,7 @@ public class OtherInfoServlet extends HttpServlet {
         try(Connection conn= vendorDAO.newConnection();
             PreparedStatement query= conn.prepareStatement(querySQL))   {
             query.setString(1,updatedExtraInfo.toString());
-            query.setString(2,"Pending");
+            query.setString(2,"pending");
             query.setInt(3,id);
             query.executeUpdate();
             if(session.getAttribute("userRole").equals("vendor")){
@@ -84,7 +84,7 @@ public class OtherInfoServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath()+"/User/user_dashboard.jsp");
             }
             vendor.setOther_details(updatedExtraInfo.toString());
-            vendor.setStatus("Pending");
+            vendor.setStatus("pending");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

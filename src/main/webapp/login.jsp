@@ -47,5 +47,9 @@
         </form>
     </div>
 
+    <form action="<%= request.getContextPath() %>/signup1" method="get">
+                <button type="submit">Click here to Signup</button>
+            </form>
+
 </body>
 </html>
