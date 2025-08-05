@@ -30,7 +30,7 @@ public class UserProfileServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("userRole") != "user") {
+        if (session == null || !session.getAttribute("userRole").equals("user")) {
             response.sendRedirect(request.getContextPath()+"/login.jsp");
             return;
         }

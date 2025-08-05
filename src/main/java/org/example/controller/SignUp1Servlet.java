@@ -5,9 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.DB.LoginDAO;
 import org.example.DB.VendorDAO;
-
+import org.example.model.User;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 @WebServlet("/signup1")
 public class SignUp1Servlet extends HttpServlet {
     LoginDAO loginDAO=new LoginDAO();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email=request.getParameter("email");
@@ -45,24 +47,14 @@ public class SignUp1Servlet extends HttpServlet {
                 request.getRequestDispatcher("/sign-up1.jsp").forward(request, response);
                 return ;
             }
-
-            String ADD_TO_PASSWORD_MANAGER="INSERT INTO emp_password_manager (email,password,role) VALUES (?,?,?)";
-            PreparedStatement query2= conn.prepareStatement(ADD_TO_PASSWORD_MANAGER);
-            query2.setString(1,email);
-            query2.setString(2,password);
-            query2.setString(3,role);
-            query2.executeUpdate();
-
-            String GET_NEW_ID="SELECT emp_id FROM emp_password_manager WHERE email=?";
-            PreparedStatement query3= conn.prepareStatement(GET_NEW_ID);
-            query3.setString(1,email);
-            rs=query3.executeQuery();
-            rs.next();
-            int id=rs.getInt("emp_id");
-
-            response.sendRedirect(request.getContextPath()+"/signup2?id="+id+"&role="+role);
+            HttpSession session= request.getSession();
 
 
+            session.setAttribute("email",email);
+            session.setAttribute("password",password);
+            session.setAttribute("userRole",role);
+
+            response.sendRedirect(request.getContextPath()+"/signup2");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

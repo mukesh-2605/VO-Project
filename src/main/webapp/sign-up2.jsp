@@ -1,21 +1,12 @@
-<%=
-    Integer id=(Integer) request.getParameter("id");
-    String role=request.getParameter("role";)
-%>
-<script>
-    const userExtra = document.getElementById("userExtra");
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    roleSelect.addEventListener("change", () => {
-        if (role=== "user") {
-            userExtra.style.display = "block";
-        } else {
-            userExtra.style.display = "none";
-        }
-    });
+<c:if test="${not empty requestScope.errorMessage}">
+    <p style="color:red;">
+        <c:out value="${requestScope.errorMessage}"/>
+    </p>
+</c:if>
+<br><br>
 
-    // Initial check
-    roleSelect.dispatchEvent(new Event('change'));
-</script>
 <form action="<%= request.getContextPath() %>/signup2" method="post">
     <label for="name">Name: </label>
     <input type="text" name="name" required />
@@ -25,12 +16,15 @@
     <br><br>
 
     <%-- Show extra field only for users (optional with JS) --%>
-    <div id="userExtra">
-        <label for="report-to">Employee ID of Reporting Admin: </label>
-        <input type="number" name="report-to" required />
-        <br><br>
-    </div>
-    <input type="hidden" name="id" value="<%= id %>">
-    <input type="hidden" name="role" value="<%= role %>">
+
+    <% String role=session.getAttribute("userRole").toString();
+        if("user".equals(role)){
+        %>
+        <div id="userExtra">
+            <label for="report-to">Employee ID of Reporting Admin: </label>
+            <input type="number" name="report-to" required />
+            <br><br>
+        </div>
+        <% } %>
     <button type="submit">Sign Up</button>
 </form>

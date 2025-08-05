@@ -27,9 +27,15 @@ public class AdminFilter implements Filter {
         }
 
         HttpSession session = req.getSession(false);
-        if (session != null && session.getAttribute("userRole") == "admin") {
+        if (session != null && session.getAttribute("userRole").equals("admin")) {
+            System.out.println("true");
+            System.out.println(session);
+            System.out.println(session.getAttribute("userRole"));
             chain.doFilter(request, response);  // allow
         } else {
+            System.out.println("false");
+            System.out.println(session);
+            System.out.println(session.getAttribute("userRole"));
             res.sendRedirect(req.getContextPath() + "/login.jsp");
         }
     }
